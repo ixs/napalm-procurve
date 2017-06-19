@@ -1,0 +1,9 @@
+ifInBroadcastPkts.1 = 8600
+ifInBroadcastPkts.2 = 0
+ifInBroadcastPkts.3 = 579,434,371
+ifInBroadcastPkts.4 = 0
+ifInBroadcastPkts.5 = 1,503,069
+ifInBroadcastPkts.6 = 1
+ifInBroadcastPkts.7 = 205,891
+ifInBroadcastPkts.8 = 0
+ifInBroadcastPkts.9 = 0

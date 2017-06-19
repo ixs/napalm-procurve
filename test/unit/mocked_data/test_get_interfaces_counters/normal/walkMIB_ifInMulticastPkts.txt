@@ -1,0 +1,9 @@
+ifInMulticastPkts.1 = 2,217,522
+ifInMulticastPkts.2 = 332
+ifInMulticastPkts.3 = 4,509,784
+ifInMulticastPkts.4 = 353
+ifInMulticastPkts.5 = 4,509,338
+ifInMulticastPkts.6 = 360
+ifInMulticastPkts.7 = 4,509,334
+ifInMulticastPkts.8 = 0
+ifInMulticastPkts.9 = 0

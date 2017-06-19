@@ -1,0 +1,20 @@
+{
+    "1": [
+        {
+            "hostname": "(none).(none)",
+            "port": "eth0"
+        }
+    ],
+    "47": [
+        {
+            "hostname": "bb-ext-switch",
+            "port": "45"
+        }
+    ],
+    "48": [
+        {
+            "hostname": "bb-ext-switch",
+            "port": "46"
+        }
+    ]
+}

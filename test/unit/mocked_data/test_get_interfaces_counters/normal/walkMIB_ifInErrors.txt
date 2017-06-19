@@ -1,0 +1,9 @@
+ifInErrors.1 = 1
+ifInErrors.2 = 0
+ifInErrors.3 = 0
+ifInErrors.4 = 0
+ifInErrors.5 = 0
+ifInErrors.6 = 0
+ifInErrors.7 = 0
+ifInErrors.8 = 0
+ifInErrors.9 = 0

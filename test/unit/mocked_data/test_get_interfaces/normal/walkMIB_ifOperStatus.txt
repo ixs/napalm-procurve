@@ -1,0 +1,9 @@
+ifOperStatus.1 = 1
+ifOperStatus.2 = 2
+ifOperStatus.3 = 1
+ifOperStatus.4 = 2
+ifOperStatus.5 = 1
+ifOperStatus.6 = 2
+ifOperStatus.7 = 1
+ifOperStatus.8 = 2
+ifOperStatus.9 = 2

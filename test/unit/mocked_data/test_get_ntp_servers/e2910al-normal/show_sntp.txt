@@ -1,0 +1,14 @@
+
+ SNTP Configuration
+
+  SNTP Authentication : Disabled
+  Time Sync Mode: Sntp
+  SNTP Mode : Unicast
+  Poll Interval (sec) [720] : 720
+  Source IP Selection: Outgoing Interface
+
+
+  Priority SNTP Server Address                      Version Key-id
+  -------- ---------------------------------------  ------- ----------
+  1        192.168.1.2                              3       0
+

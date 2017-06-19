@@ -1,0 +1,18 @@
+
+ LLDP Remote Device Information Detail
+
+  Local Port   : 9
+  ChassisType  : mac-address
+  ChassisId    : 3c 4a 92 74 4d 47
+  PortType     : mac-...
+  PortId       : 3c 4a 92 74 4d 47
+  SysName      : microserver.bb.dicp.net
+  System Descr : Linux microserver.bb.dicp.net 4.8.15-300.fc25.x86_64 #1 S...
+  PortDescr    : Interface   2 as enp3s0
+
+  System Capabilities Supported  :
+  System Capabilities Enabled    :
+
+  Remote Management Address
+
+

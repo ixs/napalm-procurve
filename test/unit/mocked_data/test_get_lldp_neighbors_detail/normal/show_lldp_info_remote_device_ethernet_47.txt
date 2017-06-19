@@ -1,0 +1,20 @@
+
+ LLDP Remote Device Information Detail
+
+  Local Port   : 47
+  ChassisType  : mac-address
+  ChassisId    : 00 11 0a a7 3b 80
+  PortType     : local
+  PortId       : 45
+  SysName      : bb-ext-switch
+  System Descr : ProCurve J4904A Switch 2848, revision I.10.105, ROM I.08....
+  PortDescr    : 45
+
+  System Capabilities Supported  : bridge, router
+  System Capabilities Enabled    : bridge
+
+  Remote Management Address
+     Type    : ipv4
+     Address : 172.16.10.50
+
+

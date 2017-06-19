@@ -1,0 +1,9 @@
+ifAlias.1 = bb1_neu IPMI
+ifAlias.2 = bb1_neu eth0
+ifAlias.3 = bb1_neu eth1
+ifAlias.4 = bb1_neu eth2
+ifAlias.5 = bb1_neu eth3
+ifAlias.6 = bb1_neu eth4
+ifAlias.7 = bb1_neu eth5
+ifAlias.8 =
+ifAlias.9 = virt2 eth2

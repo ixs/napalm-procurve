@@ -1,0 +1,4 @@
+hpicfSensorStatus.1 = 4
+hpicfSensorStatus.2 = 4
+hpicfSensorStatus.3 = 5
+hpicfSensorStatus.4 = 4

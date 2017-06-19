@@ -1,0 +1,10 @@
+
+ LLDP Remote Devices Information
+
+  LocalPort | ChassisId                 PortId PortDescr SysName
+  --------- + ------------------------- ------ --------- ----------------------
+  1         | 00 25 90 3d c3 1f         eth0   eth0      (none).(none)
+  47        | 00 11 0a a7 3b 80         45     45        bb-ext-switch
+  48        | 00 11 0a a7 3b 80         46     46        bb-ext-switch
+
+

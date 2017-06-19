@@ -1,0 +1,26 @@
+{
+    "1": [
+        {
+            "hostname": "(none).(none)",
+            "port": "eth0"
+        }
+    ],
+    "11": [
+        {
+            "hostname": "(none).(none)",
+            "port": "eth0"
+        }
+    ],
+    "3": [
+        {
+            "hostname": "bb1.core.bawue.net",
+            "port": "00 25 90 33 0c ce"
+        }
+    ],
+    "48": [
+        {
+            "hostname": "bb-ext-switch",
+            "port": "46"
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+
+ LLDP Remote Device Information Detail
+
+  Local Port   : 3
+  ChassisType  : mac-address
+  ChassisId    : 00 25 90 33 0c ce
+  PortType     : mac-address
+  PortId       : 00 25 90 33 0c ce
+  SysName      : bb1.core.bawue.net
+  System Descr : Linux bb1.core.bawue.net 3.10.0-514.16.1.el7.x86_64 #1 SM...
+  PortDescr    : Interface   4 as enp7s0
+
+  System Capabilities Supported  :
+  System Capabilities Enabled    :
+
+  Remote Management Address
+
+

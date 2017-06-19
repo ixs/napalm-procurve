@@ -1,0 +1,3 @@
+include requirements.txt
+include napalm_procurve/templates/*.j2
+include napalm_procurve/utils/textfsm_templates/*.tpl

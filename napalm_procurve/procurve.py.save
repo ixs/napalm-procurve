@@ -1,0 +1,448 @@
+# Copyright 2017 Andreas Thienemann. All rights reserved.
+#
+# The contents of this file are licensed under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with the
+# License. You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations under
+# the License.
+
+"""
+Napalm driver for HP ProCurve devices
+
+Read https://napalm.readthedocs.io for more information.
+"""
+
+from __future__ import print_function
+from __future__ import unicode_literals
+
+import re
+import socket
+
+from netmiko import ConnectHandler, FileTransfer, InLineTransfer
+from napalm_base.base import NetworkDriver
+from napalm_base.exceptions import (
+    CommandErrorException,
+    ConnectionClosedException,
+    ConnectionException,
+    )
+
+from napalm_base.utils import py23_compat
+import napalm_base.constants as C
+
+
+class ProcurveDriver(NetworkDriver):
+    """Napalm driver for ProCurve."""
+
+    def __init__(self, hostname, username, password, timeout=60,
+                 optional_args=None):
+        """Constructor."""
+        self.device = None
+        self.hostname = hostname
+        self.username = username
+        self.password = password
+        self.timeout = timeout
+
+        if optional_args is None:
+            optional_args = {}
+        self.hostname = hostname
+        self.username = username
+        self.password = password
+        self.timeout = timeout
+
+        # Netmiko possible arguments
+        netmiko_argument_map = {
+            'port': None,
+            'secret': '',
+            'verbose': False,
+            'keepalive': 30,
+            'global_delay_factor': 1,
+            'use_keys': False,
+            'key_file': None,
+            'ssh_strict': False,
+            'system_host_keys': False,
+            'alt_host_keys': False,
+            'alt_key_file': '',
+            'ssh_config_file': None,
+        }
+
+        # Build dict of any optional Netmiko args
+        self.netmiko_optional_args = {}
+        for k, v in netmiko_argument_map.items():
+            try:
+                self.netmiko_optional_args[k] = optional_args[k]
+            except KeyError:
+                pass
+        self.global_delay_factor = optional_args.get('global_delay_factor', 1)
+        self.port = optional_args.get('port', 22)
+
+        self.device = None
+        self.config_replace = False
+        self.interface_map = {}
+
+        self.profile = ["procurve"]
+
+    def open(self):
+        """Open a connection to the device."""
+        self.device = ConnectHandler(device_type='hp_procurve_ssh',
+                                     host=self.hostname,
+                                     username=self.username,
+                                     password=self.password,
+                                     **self.netmiko_optional_args)
+        # ensure in enable mode
+        self.device.enable()
+
+    def close(self):
+        """Close the connection to the device."""
+        self.device.disconnect()
+
+    def _send_command(self, command):
+        """Wrapper for self.device.send.command().
+        If command is a list will iterate through commands until valid command.
+        """
+        try:
+            if isinstance(command, list):
+                for cmd in command:
+                    output = self.device.send_command(cmd)
+                    if "Invalid input: " not in output:
+                        break
+            else:
+                output = self.device.send_command(command)
+            return output
+        except (socket.error, EOFError) as e:
+            raise ConnectionClosedException(str(e))
+
+    def is_alive(self):
+        """Returns a flag with the state of the SSH connection."""
+        return {
+            'is_alive': self.device.remote_conn.transport.is_active()
+        }
+
+    def load_merge_candidate(self, filename=None, config=None):
+        return self.device.config.load_candidate(filename=filename, config=config)
+
+    def compare_config(self):
+        return self.device.config.compare()
+
+    def commit_config(self):
+        return self.device.config.commit()
+
+    def discard_config(self):
+        return self.device.config.discard()
+
+    def rollback(self):
+        return self.device.config.rollback(number=1)
+
+    def cli(self, commands):
+        """
+        Execute a list of commands and return the output in a dictionary format
+        using the command as the key.
+        Example input:
+        ['show clock', 'show calendar']
+        Output example:
+        {   'show calendar': u'22:02:01 UTC Thu Feb 18 2016',
+            'show clock': u'*22:01:51.165 UTC Thu Feb 18 2016'}
+        """
+        cli_output = dict()
+        if type(commands) is not list:
+            raise TypeError('Please enter a valid list of commands!')
+
+        for command in commands:
+            output = self._send_command(command)
+            if 'Invalid input:' in output:
+                raise ValueError('Unable to execute command "{}"'.format(
+                                 command))
+            cli_output.setdefault(command, {})
+            cli_output[command] = output
+
+        return cli_output
+
+    def _sanitize_text(self, text, type='underscore'):
+        """Remove some weird characters from text."""
+        regexp = '[^a-zA-Z0-9]'
+        if type == "underscore":
+            return re.sub(regexp, '_', text)[0:150]
+        elif type == 'erase':
+            return re.sub(regexp, '', text)[0:150]
+
+    def _getMIB_value(self, oid):
+        """Return a MIB value"""
+        command = 'getMIB {}'.format(oid)
+        output = self._send_command(command)
+
+        # Check if system supports the command
+        if 'No such name.' in output:
+            return {}
+
+        return output.split(' = ')[1]
+
+    def _walkMIB_values(self, oid):
+        """Return MIB values as a dict"""
+        command = 'walkMIB {}'.format(oid)
+        output = self._send_command(command)
+
+        # Check if system supports the command
+        if 'Cannot translate' in output:
+            return {}
+
+        mibs = {}
+        for mib in output.splitlines():
+            try:
+                m = re.search(r"^.*\.(\d+) = (.*)$", mib)
+                mibs[m.group(1)] = m.group(2)
+            except IndexError:
+                continue
+
+        return mibs
+
+    def get_facts(self):
+        """Return a set of facts from the devices."""
+        # default values.
+        vendor = u'Hewlett-Packard'
+        uptime = -1
+        (serial_number, fqdn, os_version, hostname, model,
+         interface_list) = (u'Unknown', u'Unknown', u'Unknown', u'Unknown',
+                            u'Unknown', [])
+
+        show_system = self._send_command('show system')
+        show_uptime = self._send_command('show uptime')
+        show_model = self._getMIB_value('sysDescr.0')
+        show_int_br = self._send_command('show interfaces brief')
+
+        uptime = dict(zip(("d", "h", "m", "s"), show_uptime.split(':')))
+        uptime_seconds = int(float(uptime["s"])) + int(uptime["m"]) * 60 + int(uptime["h"]) * 60 * 60 + int(uptime["d"]) * 60 * 60 * 24
+
+        for line in show_system.splitlines():
+            if ' System Name ' in line:
+                hostname = line.split(' : ')[1].strip()
+                if '.' in hostname:
+                    fqdn = hostname
+                    hostname = hostname.split('.')[0]
+            if ' Software revision ' in line:
+                os_version = line.split(' : ')[1].split()[0].strip()
+            if ' Serial Number ' in line:
+                serial_number = line.split(' : ')[2].strip()
+
+        model = show_model.split(', ')[0].strip()
+
+        try:
+            split_int_br = re.split(r'^  -------.*$', show_int_br,
+                                    flags=re.M)[1]
+        except IndexError:
+            pass
+
+        split_int_br = split_int_br.strip()
+
+        for intf in split_int_br.splitlines():
+            try:
+                int_id = intf.split()[0].strip()
+            except IndexError:
+                pass
+            interface_list.append(int_id)
+
+        return {
+            'uptime': uptime_seconds,
+            'vendor': vendor,
+            'os_version': py23_compat.text_type(os_version),
+            'serial_number': py23_compat.text_type(serial_number),
+            'model': py23_compat.text_type(model),
+            'hostname': py23_compat.text_type(hostname),
+            'fqdn': fqdn,
+            'interface_list': interface_list
+        }
+
+    def get_lldp_neighbors(self):
+        """ProCurve implementation of get_lldp_neighbors."""
+        lldp = {}
+        command = 'show lldp info remote-device'
+        output = self._send_command(command)
+
+        # Check if system supports the command
+        if 'Invalid input:' in output:
+            return {}
+
+        # Process the output to obtain just the LLDP entries
+        try:
+            split_output = re.split(r'^.*--------.*$', output, flags=re.M)[1]
+        except IndexError:
+            return {}
+
+        split_output = split_output.strip()
+
+        for lldp_entry in split_output.splitlines():
+            # Example, 1         | 00 25 90 3d c3 1f         eth0   eth0      (none).(none)
+            local_port = lldp_entry.strip().split(' ', 1)[0].strip()
+            if '...' in lldp_entry:
+                # ... means something got truncated, we need to look at
+                # the details to get the full output
+                remote_port, device_id = self._get_lldp_neighbors_detail(local_port)
+            try:
+                (local_port, delim, r_01, r_02, r_03, r_04, r_05, r_06,
+                 remote_port, remote_port_desc, device_id) = lldp_entry.split()
+                chassis_id = '{}:{}:{}:{}:{}:{}'.format(
+                             r_01, r_02, r_03, r_04, r_05, r_06)
+            except ValueError:
+                remote_port, device_id = self._get_lldp_neighbors_detail(local_port)
+
+            entry = {'port': unicode(remote_port),
+                     'hostname': unicode(device_id)}
+            lldp.setdefault(local_port, [])
+            lldp[local_port].append(entry)
+
+        return lldp
+
+    def _get_lldp_neighbors_detail(self, interface):
+        tmp_lldp_details = self._lldp_detail_parser(interface)
+        return (tmp_lldp_details['PortId'], tmp_lldp_details['SysName'])
+
+    def _lldp_detail_parser(self, interface):
+        lldp = {}
+        command = "show lldp info remote-device ethernet {}".format(interface)
+        output = self._send_command(command)
+
+        # Check if router supports the command
+        if '% Invalid input' in output:
+            raise ValueError("Command not supported by network device")
+
+        for lldp_detail in output.splitlines():
+            try:
+                key, value = map(lambda x: x.strip(), lldp_detail.split(' : '))
+            except ValueError:
+                continue
+
+            if key == 'System Descr' and value.endswith('...'):
+                # Procurve OS truncated the entry, thanks. Fetch full value
+                # from the MIB
+                value = self._getMIB_value('lldpRemSysDesc.0.{}.1'.format(
+                        interface))
+
+            if key in ('Type', 'Address'):
+                key = "AdmMgmt{}".format(key)
+
+            key = self._sanitize_text(key, 'erase')
+
+            lldp[key] = value
+
+        return lldp
+
+    def get_environment(self):
+        """
+        Get environment facts.
+        cpu is using 1-minute average
+        cpu hard-coded to cpu0 (i.e. only a single CPU)
+        """
+        environment = {}
+        show_cpu_1m = self._send_command('show cpu 60')
+
+        sensor_state_table = {
+            1: 'unknown',
+            2: 'bad',
+            3: 'warning',
+            4: 'good',
+            5: 'notPresent'
+        }
+
+        environment.setdefault('cpu', {})
+        environment['cpu'][0] = {}
+        environment['cpu'][0]['%usage'] = 0.0
+        try:
+            environment['cpu'][0]['%usage'] = float(show_cpu_1m.split(
+                                              '/')[0].strip())
+        except:
+            pass
+
+        environment.setdefault('memory', {})
+        environment['memory']['used_ram'] = int(self._getMIB_value(
+                                            'hpLocalMemAllocBytes.1'
+                                            ).replace(',', ''))
+        environment['memory']['available_ram'] = int(self._getMIB_value(
+                                                 'hpLocalMemFreeBytes.1'
+                                                 ).replace(',', ''))
+
+        # Initialize 'power', 'fan', and 'temperature' to default values
+        environment.setdefault('power', {})
+        environment.setdefault('fans', {})
+        environment.setdefault('temperature', {})
+
+        # Find sensors
+        sensortypes = self._walkMIB_values('hpicfSensorObjectId')
+        sensorvalues = self._walkMIB_values('hpicfSensorDescr')
+        sensorstates = self._walkMIB_values('hpicfSensorStatus')
+        for sid, stype in sensortypes.iteritems():
+            sname = sensorvalues[sid]
+            sreport = sensor_state_table[int(sensorstates[sid])]
+            if sreport == 'not present':
+                continue
+
+            if stype == 'icfFanSensor':
+                env_category = 'fans'
+                env_value = {'status': True if sreport == 'good' else False}
+            if stype == 'icfTemperatureSensor':
+                env_category = 'temperature'
+                env_value = {'temperature': -1.0,
+                             'is_alert': True if sreport == 'warning'
+                             else False,
+                             'is_critical': True if sreport == 'bad'
+                             else False}
+            if stype == 'icfPowerSupplySensor':
+                env_category = 'power'
+                env_value = {'capacity': -1.0,
+                             'output': -1.0,
+                             'status': True if sreport == 'good' else False}
+
+            environment[env_category][sname] = env_value
+        return environment
+
+
+    def get_config(self, retrieve='all'):
+
+        config = {
+            'startup': '',
+            'running': '',
+            'candidate': ''
+        }  # default values
+
+        if retrieve.lower() in ['running', 'all']:
+            running_config = self._send_command('show running-config')
+            running_config = re.split(r'^; .* Configuration Editor;.*$', running_config,
+                                    flags=re.M)[1].strip()
+            config['running'] = py23_compat.text_type(running_config)
+        if retrieve.lower() in ['startup', 'all']:
+            startup_config = self._send_command('show config')
+            startup_config = re.split(r'^; .* Configuration Editor;.*$', startup_config,
+                                    flags=re.M)[1].strip()
+            config['startup'] = py23_compat.text_type(startup_config)
+
+
+        return config
+
+    def _ping_caps(self):
+        """Discover ping capabilities"""
+        ping_help = self._send_command('ping help')
+        return re.findall(r"^   o \[?([-\w]+)\]? ", ping_help, flags=re.M)
+
+    def ping(self, destination, source=C.PING_SOURCE, ttl=C.PING_TTL, timeout=C.PING_TIMEOUT,
+             size=C.PING_SIZE, count=C.PING_COUNT, vrf=C.PING_VRF):
+        """Execute ping on the device and returns a dictionary with the result."""
+
+        ping = {}
+        ping_caps = self._ping_caps()
+
+        command = 'ping {}'.format(destination)
+        command += ' repetitions {}'.format(count)
+        command += ' timeout {}'.format(timeout)
+        if 'data-size' in ping_caps:
+            command += ' data-size {}'.format(size)
+        if source != '' and 'source' in ping_caps:
+            command += ' source {}'.format(source)
+        elif source != '':
+            return {'error': 'source option not supported by device'}
+
+        output = self._send_command(command)
+
+        

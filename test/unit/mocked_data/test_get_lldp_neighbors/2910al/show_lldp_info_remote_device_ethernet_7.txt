@@ -1,0 +1,28 @@
+
+ LLDP Remote Device Information Detail
+
+  Local Port   : 7
+  ChassisType  : mac-address
+  ChassisId    : 00 a0 57 19 a6 c9
+  PortType     : inte...
+  PortId       : LAN-1
+  SysName      : AP-BB-04
+  System Descr : LANCOM L-322agn dual Wireless 9.04.0184 / 23.03.2015 4002...
+  PortDescr    : Freescale TSEC Ethernet 1
+
+  System Capabilities Supported  : bridge, wlan-access-point, router
+  System Capabilities Enabled    : bridge, wlan-access-point, router
+
+  Remote Management Address
+     Type    : ipv4
+     Address : 192.168.1.244
+
+  Poe Plus Information Detail
+
+    Poe Device Type         : Type2 PD
+    Power Source            : Only PSE
+    Power Priority          : High
+    Requested Power Value   : 13 Watts
+    Actual Power Value      : 13 Watts
+
+

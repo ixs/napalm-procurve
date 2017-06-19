@@ -1,0 +1,20 @@
+
+ LLDP Remote Device Information Detail
+
+  Local Port   : 46
+  ChassisType  : mac-address
+  ChassisId    : 00 14 fd 11 4a a0
+  PortType     : inte...
+  PortId       : eth1
+  SysName      : nas1.bb.dicp.net
+  System Descr : Linux 2.6.13N5200 #135 Mon May 24 17:46:32 CST 2010 i686
+  PortDescr    :
+
+  System Capabilities Supported  : router
+  System Capabilities Enabled    :
+
+  Remote Management Address
+     Type    : ipv4
+     Address : 192.168.1.30
+
+

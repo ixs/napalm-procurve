@@ -1,0 +1,24 @@
+
+ Status and Counters - General System Information
+
+  System Name        : bb-switch-failover
+  System Contact     : Bawue.Net Admin <admin@bawue.net>
+  System Location    : Softwarezentrum Boeblingen Sindelfingen
+
+  MAC Age Time (sec) : 300
+
+  Time Zone          : 60
+  Daylight Time Rule : Western-Europe
+
+
+  Software revision  : I.10.105         Base MAC Addr      : 001708-c82100
+  ROM Version        : I.08.07          Serial Number      : SG637SK06M
+
+  Up Time            : 285 days         Memory   - Total   : 32,070,696
+  CPU Util (%)       : 9                           Free    : 21,654,064
+
+  IP Mgmt  - Pkts Rx : 165,582,117      Packet   - Total   : 1998
+             Pkts Tx : 161,770,308      Buffers    Free    : 1511
+                                                   Lowest  : 946
+                                                   Missed  : 0
+

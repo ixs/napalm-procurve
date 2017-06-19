@@ -1,0 +1,1 @@
+lldpRemSysDesc.0.7.1 = LANCOM L-322agn dual Wireless 9.04.0184 / 23.03.2015 4002461918100185

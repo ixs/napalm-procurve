@@ -1,0 +1,20 @@
+
+ LLDP Remote Device Information Detail
+
+  Local Port   : 1
+  ChassisType  : mac-address
+  ChassisId    : 00 25 90 3d c3 1f
+  PortType     : interface-name
+  PortId       : eth0
+  SysName      : (none).(none)
+  System Descr : armv5tejl/Linux 2.6.17.WB_WPCM450.1.3
+  PortDescr    : eth0
+
+  System Capabilities Supported  : station-only
+  System Capabilities Enabled    : station-only
+
+  Remote Management Address
+     Type    : ipv4
+     Address : 172.16.11.252
+
+

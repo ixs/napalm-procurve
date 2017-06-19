@@ -1,0 +1,32 @@
+{
+    "3": [
+        {
+            "hostname": "PROCURVE J9449A",
+            "port": "1"
+        }
+    ],
+    "45": [
+        {
+            "hostname": "nas1.bb.dicp.net",
+            "port": "eth0"
+        }
+    ],
+    "46": [
+        {
+            "hostname": "nas1.bb.dicp.net",
+            "port": "eth1"
+        }
+    ],
+    "7": [
+        {
+            "hostname": "AP-BB-04",
+            "port": "LAN-1"
+        }
+    ],
+    "9": [
+        {
+            "hostname": "microserver.bb.dicp.net",
+            "port": "3c 4a 92 74 4d 47"
+        }
+    ]
+}

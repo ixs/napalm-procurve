@@ -1,0 +1,9 @@
+ifPhysAddress.1 = 00 17 08 c8 21 3f
+ifPhysAddress.2 = 00 17 08 c8 21 3e
+ifPhysAddress.3 = 00 17 08 c8 21 3d
+ifPhysAddress.4 = 00 17 08 c8 21 3c
+ifPhysAddress.5 = 00 17 08 c8 21 3b
+ifPhysAddress.6 = 00 17 08 c8 21 3a
+ifPhysAddress.7 = 00 17 08 c8 21 39
+ifPhysAddress.8 = 00 17 08 c8 21 38
+ifPhysAddress.9 = 00 17 08 c8 21 37

@@ -1,0 +1,9 @@
+ifAdminStatus.1 = 1
+ifAdminStatus.2 = 1
+ifAdminStatus.3 = 1
+ifAdminStatus.4 = 1
+ifAdminStatus.5 = 1
+ifAdminStatus.6 = 1
+ifAdminStatus.7 = 1
+ifAdminStatus.8 = 1
+ifAdminStatus.9 = 1

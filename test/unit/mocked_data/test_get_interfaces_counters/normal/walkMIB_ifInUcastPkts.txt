@@ -1,0 +1,9 @@
+ifInUcastPkts.1 = 75,214,642
+ifInUcastPkts.2 = 0
+ifInUcastPkts.3 = 886,636,178
+ifInUcastPkts.4 = 0
+ifInUcastPkts.5 = 173,188,008
+ifInUcastPkts.6 = 0
+ifInUcastPkts.7 = 1,086,695,681
+ifInUcastPkts.8 = 0
+ifInUcastPkts.9 = 0

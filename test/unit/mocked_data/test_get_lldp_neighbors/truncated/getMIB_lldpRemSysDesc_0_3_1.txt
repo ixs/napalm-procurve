@@ -1,0 +1,1 @@
+lldpRemSysDesc.0.3.1 = Linux bb1.core.bawue.net 3.10.0-514.16.1.el7.x86_64 #1 SMP Wed Apr 12 15:04:24 UTC 2017 x86_64

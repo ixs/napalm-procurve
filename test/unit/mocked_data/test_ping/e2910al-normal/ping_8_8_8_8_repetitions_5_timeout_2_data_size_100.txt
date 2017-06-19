@@ -1,0 +1,7 @@
+8.8.8.8 is alive, iteration 1, time = 34 ms
+8.8.8.8 is alive, iteration 2, time = 34 ms
+8.8.8.8 is alive, iteration 3, time = 35 ms
+8.8.8.8 is alive, iteration 4, time = 35 ms
+8.8.8.8 is alive, iteration 5, time = 34 ms
+5 packets transmitted, 5 packets received, 0% packet loss
+round-trip (ms) min/avg/max = 34/34/35

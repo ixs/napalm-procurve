@@ -1,0 +1,4 @@
+hpicfSensorObjectId.1 = icfFanSensor
+hpicfSensorObjectId.2 = icfPowerSupplySensor
+hpicfSensorObjectId.3 = icfPowerSupplySensor
+hpicfSensorObjectId.4 = icfTemperatureSensor

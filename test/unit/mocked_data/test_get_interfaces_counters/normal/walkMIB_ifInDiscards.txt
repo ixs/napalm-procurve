@@ -1,0 +1,9 @@
+ifInDiscards.1 = 0
+ifInDiscards.2 = 0
+ifInDiscards.3 = 0
+ifInDiscards.4 = 0
+ifInDiscards.5 = 0
+ifInDiscards.6 = 0
+ifInDiscards.7 = 0
+ifInDiscards.8 = 0
+ifInDiscards.9 = 0

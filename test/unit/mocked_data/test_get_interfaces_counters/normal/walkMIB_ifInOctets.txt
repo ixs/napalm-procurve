@@ -1,0 +1,9 @@
+ifInOctets.1 = 185,379,183
+ifInOctets.2 = 41,240
+ifInOctets.3 = 1,586,505,683
+ifInOctets.4 = 43,418
+ifInOctets.5 = 738,915,275
+ifInOctets.6 = 44,398
+ifInOctets.7 = 2,603,288,654
+ifInOctets.8 = 0
+ifInOctets.9 = 0

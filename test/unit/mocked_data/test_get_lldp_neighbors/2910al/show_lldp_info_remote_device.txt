@@ -1,0 +1,12 @@
+
+ LLDP Remote Devices Information
+
+  LocalPort | ChassisId                 PortId PortDescr SysName
+  --------- + ------------------------- ------ --------- ----------------------
+  3         | 78 ac c0 76 ab 70         1      Port #1   PROCURVE J9449A
+  7         | 00 a0 57 19 a6 c9         LAN-1  Freesc... AP-BB-04
+  9         | 3c 4a 92 74 4d 47         3c ... Interf... microserver.bb.dicp...
+  45        | 00 14 fd 11 4a a0         eth0             nas1.bb.dicp.net
+  46        | 00 14 fd 11 4a a0         eth1             nas1.bb.dicp.net
+
+

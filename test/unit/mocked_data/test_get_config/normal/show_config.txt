@@ -1,0 +1,288 @@
+
+Startup configuration:
+
+; J9148A Configuration Editor; Created on release #W.15.08.0012
+; Ver #02:11.05:16
+hostname "HP-E2910al-48G-PoE"
+module 1 type j9148a
+console baud-rate 9600
+power-over-ethernet pre-std-detect
+timesync sntp
+sntp unicast
+sntp server priority 1 192.168.1.2
+time daylight-time-rule western-europe
+time timezone 60
+no web-management
+ip ssh filetransfer
+ip route 0.0.0.0 0.0.0.0 192.168.1.254
+interface 1
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 2
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 3
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 4
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 5
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 6
+   flow-control
+   lacp passive
+   name "rtr IPMI"
+   poe-lldp-detect enabled
+   exit
+interface 7
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 8
+   flow-control
+   lacp passive
+   name "rtr eth0"
+   poe-lldp-detect enabled
+   exit
+interface 9
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 10
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 11
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 12
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 13
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 14
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 15
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 16
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 17
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 18
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 19
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 20
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 21
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 22
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 23
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 24
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 25
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 26
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 27
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 28
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 29
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 30
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 31
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 32
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 33
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 34
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 35
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 36
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 37
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 38
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 39
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 40
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 41
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 42
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 43
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 44
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 45
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 46
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 47
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+interface 48
+   flow-control
+   lacp passive
+   poe-lldp-detect enabled
+   exit
+snmp-server community "public" unrestricted
+spanning-tree
+vlan 1
+   name "DEFAULT_VLAN"
+   no untagged 35
+   untagged 1-34,36-48
+   ip address 192.168.1.248 255.255.255.0
+   exit
+vlan 2
+   name "Internet"
+   tagged 2,11
+   no ip address
+   exit
+vlan 3
+   name "PublicSpot"
+   tagged 2,4,7,11,13,17,37,39
+   no ip address
+   exit
+vlan 4
+   name "test"
+   untagged 35
+   no ip address
+   exit
+no tftp client
+no tftp server
+no autorun
+password manager
+password operator
+

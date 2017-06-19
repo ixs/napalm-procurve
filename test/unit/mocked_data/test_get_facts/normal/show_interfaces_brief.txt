@@ -1,0 +1,55 @@
+
+ Status and Counters - Port Status
+
+                    | Intrusion                           MDI   Flow  Bcast
+  Port    Type      | Alert     Enabled Status Mode       Mode  Ctrl  Limit
+  ------- --------- + --------- ------- ------ ---------- ----- ----- ------
+  1       100/1000T | No        Yes     Up     100FDx     MDIX  off   0
+  2       100/1000T | No        Yes     Down   1000FDx    MDI   off   0
+  3       100/1000T | No        Yes     Up     1000FDx    MDI   off   0
+  4       100/1000T | No        Yes     Down   1000FDx    MDI   off   0
+  5       100/1000T | No        Yes     Up     1000FDx    MDIX  off   0
+  6       100/1000T | No        Yes     Down   1000FDx    MDI   off   0
+  7       100/1000T | No        Yes     Up     1000FDx    MDI   off   0
+  8       100/1000T | No        Yes     Down   1000FDx    MDI   off   0
+  9       100/1000T | No        Yes     Down   1000FDx    MDIX  off   0
+  10      100/1000T | No        Yes     Down   1000FDx    MDI   off   0
+  11      100/1000T | No        Yes     Up     100FDx     MDIX  off   0
+  12      100/1000T | No        Yes     Down   1000FDx    MDIX  off   0
+  13      100/1000T | No        Yes     Up     1000FDx    MDI   off   0
+  14      100/1000T | No        Yes     Down   1000FDx    MDIX  off   0
+  15      100/1000T | No        Yes     Up     1000FDx    MDI   off   0
+  16      100/1000T | No        Yes     Down   1000FDx    MDIX  off   0
+  17      100/1000T | No        Yes     Up     1000FDx    MDI   off   0
+  18      100/1000T | No        Yes     Up     1000FDx    MDI   off   0
+  19      100/1000T | No        Yes     Down   1000FDx    MDIX  off   0
+  20      100/1000T | No        Yes     Down   1000FDx    MDI   off   0
+  21      100/1000T | No        Yes     Down   1000FDx    MDIX  off   0
+  22      100/1000T | No        Yes     Down   1000FDx    MDIX  off   0
+  23      100/1000T | No        Yes     Down   1000FDx    MDI   off   0
+  24      100/1000T | No        Yes     Down   1000FDx    MDIX  off   0
+  25      100/1000T | No        Yes     Down   1000FDx    MDIX  off   0
+  26      100/1000T | No        Yes     Down   1000FDx    MDIX  off   0
+  27      100/1000T | No        Yes     Down   1000FDx    MDIX  off   0
+  28      100/1000T | No        Yes     Down   1000FDx    MDI   off   0
+  29      100/1000T | No        Yes     Up     100FDx     MDIX  off   0
+  30      100/1000T | No        Yes     Up     1000FDx    MDI   off   0
+  31      100/1000T | No        Yes     Up     100FDx     MDI   off   0
+  32      100/1000T | No        Yes     Down   1000FDx    MDI   off   0
+  33      100/1000T | No        Yes     Up     1000FDx    MDIX  off   0
+  34      100/1000T | No        Yes     Up     1000FDx    MDIX  off   0
+  35      100/1000T | No        Yes     Up     1000FDx    MDI   off   0
+  36      100/1000T | No        Yes     Down   1000FDx    MDIX  off   0
+  37      100/1000T | No        Yes     Down   1000FDx    MDI   off   0
+  38      100/1000T | No        Yes     Down   1000FDx    MDI   off   0
+  39      100/1000T | No        Yes     Down   1000FDx    MDIX  off   0
+  40      100/1000T | No        Yes     Down   1000FDx    MDI   off   0
+  41      100/1000T | No        Yes     Down   1000FDx    MDIX  off   0
+  42      100/1000T | No        Yes     Down   1000FDx    MDIX  off   0
+  43      100/1000T | No        Yes     Down   1000FDx    MDI   off   0
+  44      100/1000T | No        Yes     Down   1000FDx    MDIX  off   0
+  45      100/1000T | No        Yes     Down   1000FDx    MDI   off   0
+  46      100/1000T | No        Yes     Down   1000FDx    MDI   off   0
+  47-Trk3 100/1000T | No        Yes     Up     1000FDx    MDIX  off   0
+  48-Trk3 100/1000T | No        Yes     Up     1000FDx    MDIX  off   0
+

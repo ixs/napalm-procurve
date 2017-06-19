@@ -1,0 +1,9 @@
+ifType.1 = 6
+ifType.2 = 6
+ifType.3 = 6
+ifType.4 = 6
+ifType.5 = 6
+ifType.6 = 6
+ifType.7 = 6
+ifType.8 = 161
+ifType.9 = 24

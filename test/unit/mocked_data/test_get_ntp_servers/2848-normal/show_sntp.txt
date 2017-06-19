@@ -1,0 +1,13 @@
+
+ SNTP Configuration
+
+  Time Sync Mode: Sntp
+  SNTP Mode : Unicast
+  Poll Interval (sec) [720] : 720
+
+
+  IP Address       Protocol Version
+  --------------   ----------------
+  172.16.11.252    3
+  172.16.11.253    3
+

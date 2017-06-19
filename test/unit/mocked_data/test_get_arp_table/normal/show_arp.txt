@@ -1,0 +1,14 @@
+
+ IP ARP table
+
+  IP Address      MAC Address       Type    Port
+  --------------- ----------------- ------- ----
+  172.16.10.1     00163e-1234df     dynamic Trk3
+  172.16.10.30    001b21-9c43f6     dynamic 5
+  172.16.10.68    003048-cfc856     dynamic 35
+  172.16.10.69    003048-c56702     dynamic 33
+  172.16.10.90    00e081-466ca3     dynamic Trk3
+  172.16.11.252   002590-3dc31f     dynamic 1
+  172.16.11.253   002590-3dc33a     dynamic 11
+
+

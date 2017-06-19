@@ -1,0 +1,20 @@
+
+ LLDP Remote Device Information Detail
+
+  Local Port   : 3
+  ChassisType  : mac-address
+  ChassisId    : 78 ac c0 76 ab 70
+  PortType     : local
+  PortId       : 1
+  SysName      : PROCURVE J9449A
+  System Descr :  HP ProCurve 1810G - 8 GE, P.2.10, eCos-2.0, CFE-2.1
+  PortDescr    : Port #1
+
+  System Capabilities Supported  : bridge
+  System Capabilities Enabled    : bridge
+
+  Remote Management Address
+     Type    : ipv4
+     Address : 192.168.1.247
+
+

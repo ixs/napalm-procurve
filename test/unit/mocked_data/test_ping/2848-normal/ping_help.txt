@@ -1,0 +1,21 @@
+Usage: ping <IP-ADDR|SWITCH-NUM>
+            [repetitions <1-10000>] [timeout <1-60>]
+
+Description: Send IP Ping requests to a device on the network.
+
+Parameters:
+
+   o IP-ADDR    - Network IP address of station to which to send IP Ping.
+
+   o SWITCH-NUM - The number of Stack member switch (1..16)
+
+   o [repetitions <1-10000>] - Number of times to send IP Ping; the default
+     value is 1.
+
+   o [timeout <1-60>] - Seconds within which a response is required
+     before the test is considered as failed; the default value is 3.
+
+Examples:
+
+    (1) hp-switch# ping 1.1.1.1
+

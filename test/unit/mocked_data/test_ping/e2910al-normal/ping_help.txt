@@ -1,0 +1,50 @@
+Usage: ping <IP-ADDR|hostname|SWITCH-NUM>
+            [repetitions <1-10000>] [timeout <1-60>]
+            [data-size <0-65471>] [data-fill <0-1024>]
+            [source <IP_ADDR|VLAN-ID|loopback <0-7>>]
+            [ip-option <record-route |
+                       loose-source-route  IP-ADDR [<IP-ADDR>] |
+                       strict-source-route IP-ADDR [<IP-ADDR>] |
+                       include-timestamp | include-timestamp-and-address |
+                       include-timestamp-from IP-ADDR [<IP-ADDR>]> ]
+            [tos <0-255>]
+
+Description: Send IPv4 ping request(s) to a device on the network.
+
+Parameters:
+
+   o IP-ADDR - IPv4 address of device to ping.
+
+   o hostname - Hostname of device to which to send IPv4 ping.
+
+   o [repetitions <1-10000>] - Number of times to send ping; the default
+     value is 1.
+
+   o [timeout <1-60>] - Seconds within which a response is required
+     before the test is considered as failed; the default value is 5.
+
+   o [data-size <0-65471>] - Size of data to send; the default
+     size is 0.
+
+   o [data-fill <0-1024>] - The string to be filled in the data portion
+     of the packet. A string upto 1024 characters in length can be
+     specified. The default value is a 0 length string.
+
+   o [source <IP_ADDR|VLAN-ID|loopback <0-7>>] - The source IPv4 address or
+     VLAN or loopback.
+   o [ip-option <record-route | loose-source-route  IP-ADDR [<IP-ADDR>] |
+      strict-source-route IP-ADDR [<IP-ADDR>] |
+      include-timestamp | include-timestamp-and-address |
+      include-timestamp-from IP-ADDR [<IP-ADDR>]> ]
+      ip-option  - Specify any one the following IP option:
+         record-route        - Record Routing option.
+         loose-source-route  - Loose Source Routing option.
+         strict-source-route - Strict Source Routing option.
+         include-timestamp   - Store the Timestamp of the intermediate hops.
+         include-timestamp-and-address - Store the Timestamp & IP-Address of the intermediate hops.
+         include-timestamp-from - Store the Timestamp of the specified intermediate hops.
+   o [tos <0-255>] - Type of Service <0-255>.
+Examples:
+
+    (1) hp-switch# ping 1.1.1.1
+

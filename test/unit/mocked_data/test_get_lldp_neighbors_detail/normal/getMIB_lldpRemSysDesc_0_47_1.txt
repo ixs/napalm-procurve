@@ -1,0 +1,1 @@
+lldpRemSysDesc.0.47.1 = ProCurve J4904A Switch 2848, revision I.10.105, ROM I.08.07 (/sw/code/build/mako)

@@ -1,0 +1,58 @@
+{
+    "1":{
+        "is_enabled":true,
+        "description":"bb1_neu IPMI",
+        "last_flapped":-1,
+        "is_up":true,
+        "mac_address":"00 17 08 c8 21 3f",
+        "speed":100
+    },
+    "3":{
+        "is_enabled":true,
+        "description":"bb1_neu eth1",
+        "last_flapped":-1,
+        "is_up":true,
+        "mac_address":"00 17 08 c8 21 3d",
+        "speed":1000
+    },
+    "2":{
+        "is_enabled":true,
+        "description":"bb1_neu eth0",
+        "last_flapped":-1,
+        "is_up":false,
+        "mac_address":"00 17 08 c8 21 3e",
+        "speed":1000
+    },
+    "5":{
+        "is_enabled":true,
+        "description":"bb1_neu eth3",
+        "last_flapped":-1,
+        "is_up":true,
+        "mac_address":"00 17 08 c8 21 3b",
+        "speed":1000
+    },
+    "4":{
+        "is_enabled":true,
+        "description":"bb1_neu eth2",
+        "last_flapped":-1,
+        "is_up":false,
+        "mac_address":"00 17 08 c8 21 3c",
+        "speed":1000
+    },
+    "7":{
+        "is_enabled":true,
+        "description":"bb1_neu eth5",
+        "last_flapped":-1,
+        "is_up":true,
+        "mac_address":"00 17 08 c8 21 39",
+        "speed":1000
+    },
+    "6":{
+        "is_enabled":true,
+        "description":"bb1_neu eth4",
+        "last_flapped":-1,
+        "is_up":false,
+        "mac_address":"00 17 08 c8 21 3a",
+        "speed":1000
+    }
+}

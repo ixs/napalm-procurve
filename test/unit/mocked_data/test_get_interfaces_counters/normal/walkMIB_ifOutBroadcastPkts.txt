@@ -1,0 +1,9 @@
+ifOutBroadcastPkts.1 = 13,739,001
+ifOutBroadcastPkts.2 = 32,342
+ifOutBroadcastPkts.3 = 971,299,592
+ifOutBroadcastPkts.4 = 11,813
+ifOutBroadcastPkts.5 = 16,315,841
+ifOutBroadcastPkts.6 = 180
+ifOutBroadcastPkts.7 = 6,002,844
+ifOutBroadcastPkts.8 = 0
+ifOutBroadcastPkts.9 = 0

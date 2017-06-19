@@ -1,0 +1,9 @@
+ifOutOctets.1 = 196,397,870
+ifOutOctets.2 = 2,481,444
+ifOutOctets.3 = 2,868,759,650
+ifOutOctets.4 = 1,040,568
+ifOutOctets.5 = 1,176,151,362
+ifOutOctets.6 = 277,220
+ifOutOctets.7 = 3,503,318,712
+ifOutOctets.8 = 0
+ifOutOctets.9 = 0

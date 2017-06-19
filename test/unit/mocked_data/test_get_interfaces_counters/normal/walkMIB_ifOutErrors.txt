@@ -1,0 +1,9 @@
+ifOutErrors.1 = 0
+ifOutErrors.2 = 0
+ifOutErrors.3 = 0
+ifOutErrors.4 = 0
+ifOutErrors.5 = 0
+ifOutErrors.6 = 0
+ifOutErrors.7 = 0
+ifOutErrors.8 = 0
+ifOutErrors.9 = 0

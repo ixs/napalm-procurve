@@ -1,0 +1,9 @@
+ifOutMulticastPkts.1 = 48,533,471
+ifOutMulticastPkts.2 = 4407
+ifOutMulticastPkts.3 = 52,132,943
+ifOutMulticastPkts.4 = 3868
+ifOutMulticastPkts.5 = 48,970,990
+ifOutMulticastPkts.6 = 3693
+ifOutMulticastPkts.7 = 47,548,057
+ifOutMulticastPkts.8 = 0
+ifOutMulticastPkts.9 = 0

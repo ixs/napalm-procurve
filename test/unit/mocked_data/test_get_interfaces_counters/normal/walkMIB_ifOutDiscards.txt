@@ -1,0 +1,9 @@
+ifOutDiscards.1 = 43
+ifOutDiscards.2 = 0
+ifOutDiscards.3 = 771
+ifOutDiscards.4 = 0
+ifOutDiscards.5 = 63
+ifOutDiscards.6 = 0
+ifOutDiscards.7 = 0
+ifOutDiscards.8 = 0
+ifOutDiscards.9 = 0
