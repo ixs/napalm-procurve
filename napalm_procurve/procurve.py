@@ -26,16 +26,16 @@ import re
 import socket
 
 from netmiko import ConnectHandler, FileTransfer, InLineTransfer
-from napalm_base.base import NetworkDriver
-from napalm_base.exceptions import (
+from napalm.base.base import NetworkDriver
+from napalm.base.exceptions import (
     CommandErrorException,
     ConnectionClosedException,
     ConnectionException,
     )
 
-from napalm_base.utils import py23_compat
-import napalm_base.constants as C
-import napalm_base.helpers
+from napalm.base.utils import py23_compat
+import napalm.base.constants as C
+import napalm.base.helpers
 
 
 class ProcurveDriver(NetworkDriver):
@@ -581,7 +581,7 @@ class ProcurveDriver(NetworkDriver):
 
             entry = {
                 'interface': py23_compat.text_type(port),
-                'mac': napalm_base.helpers.mac(mac),
+                'mac': napalm.base.helpers.mac(mac),
                 'ip': py23_compat.text_type(address),
                 'age': 0.0
             }
