@@ -13,4 +13,12 @@
 # the License.
 
 """napalm-procurve package."""
-from procurve import ProcurveDriver
+import pkg_resources
+from napalm_procurve.procurve import ProcurveDriver
+
+try:
+    __version__ = pkg_resources.get_distribution('napalm-procurve').version
+except pkg_resources.DistributionNotFound:
+    __version__ = "Not installed"
+
+__all__ = ['ProcurveDriver']
