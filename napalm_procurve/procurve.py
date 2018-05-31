@@ -200,6 +200,8 @@ class ProcurveDriver(NetworkDriver):
         for mib in output.splitlines():
             try:
                 m = re.search(r"^.*\.(\d+) =(.*)$", mib)
+                if m is None:
+                    continue
                 mibs[m.group(1).strip()] = m.group(2).strip()
             except IndexError:
                 continue
@@ -237,19 +239,18 @@ class ProcurveDriver(NetworkDriver):
         model = show_model.split(', ')[0].strip()
 
         try:
-            split_int_br = re.split(r'^  -------.*$', show_int_br,
-                                    flags=re.M)[1]
+            split_int_br = re.split(r'-------.*', show_int_br, flags=re.M)[1]
+
+            split_int_br = split_int_br.strip()
+
+            for intf in split_int_br.splitlines():
+                try:
+                    int_id = intf.split()[0].strip()
+                except IndexError:
+                    pass
+                interface_list.append(int_id)
         except IndexError:
             pass
-
-        split_int_br = split_int_br.strip()
-
-        for intf in split_int_br.splitlines():
-            try:
-                int_id = intf.split()[0].strip()
-            except IndexError:
-                pass
-            interface_list.append(int_id)
 
         return {
             'uptime': uptime_seconds,
@@ -295,8 +296,8 @@ class ProcurveDriver(NetworkDriver):
             except ValueError:
                 remote_port, device_id = self._get_lldp_neighbors_detail(local_port)
 
-            entry = {'port': unicode(remote_port),
-                     'hostname': unicode(device_id)}
+            entry = {'port': py23_compat.text_type(remote_port),
+                     'hostname': py23_compat.text_type(device_id)}
             lldp.setdefault(local_port, [])
             lldp[local_port].append(entry)
 
@@ -310,7 +311,7 @@ class ProcurveDriver(NetworkDriver):
         lldp = {}
         lldp_neighbors = self.get_lldp_neighbors()
 
-        interface = unicode(interface)
+        interface = py23_compat.text_type(interface)
 
         # Filter to specific interface
         if interface:
@@ -336,7 +337,6 @@ class ProcurveDriver(NetworkDriver):
                 'remote_system_enable_capab': lldp_fields["SystemCapabilitiesEnabled"]})
 
         return lldp
-
 
     def _get_lldp_neighbors_detail(self, interface):
         tmp_lldp_details = self._lldp_detail_parser(interface)
@@ -417,7 +417,8 @@ class ProcurveDriver(NetworkDriver):
         sensortypes = self._walkMIB_values('hpicfSensorObjectId')
         sensorvalues = self._walkMIB_values('hpicfSensorDescr')
         sensorstates = self._walkMIB_values('hpicfSensorStatus')
-        for sid, stype in sensortypes.iteritems():
+        for sid in sensortypes.keys():
+            stype = sensortypes[sid]
             sname = sensorvalues[sid]
             sreport = sensor_state_table[int(sensorstates[sid])]
             if sreport == 'not present':
@@ -426,22 +427,22 @@ class ProcurveDriver(NetworkDriver):
             if stype == 'icfFanSensor':
                 env_category = 'fans'
                 env_value = {'status': True if sreport == 'good' else False}
-            if stype == 'icfTemperatureSensor':
+            elif stype == 'icfTemperatureSensor':
                 env_category = 'temperature'
                 env_value = {'temperature': -1.0,
                              'is_alert': True if sreport == 'warning'
                              else False,
                              'is_critical': True if sreport == 'bad'
                              else False}
-            if stype == 'icfPowerSupplySensor':
+            elif stype == 'icfPowerSupplySensor':
                 env_category = 'power'
                 env_value = {'capacity': -1.0,
                              'output': -1.0,
                              'status': True if sreport == 'good' else False}
-
+            else:
+                continue
             environment[env_category][sname] = env_value
         return environment
-
 
     def get_config(self, retrieve='all'):
 
@@ -461,8 +462,6 @@ class ProcurveDriver(NetworkDriver):
             startup_config = re.split(r'^; .* Configuration Editor;.*$', startup_config,
                                     flags=re.M)[1].strip()
             config['startup'] = py23_compat.text_type(startup_config)
-
-
         return config
 
     def _ping_caps(self):
@@ -512,7 +511,7 @@ class ProcurveDriver(NetworkDriver):
             for line in output.splitlines():
                 try:
                     ping_data = re.search(r"^(.*) is alive, iteration (\d+), time = (\d+) ms$", line, flags=re.M)
-                    ping_dict['success']['results'].append({'ip_address': unicode(ping_data.group(1)), 'rtt': float(ping_data.group(3))})
+                    ping_dict['success']['results'].append({'ip_address': py23_compat.text_type(ping_data.group(1)), 'rtt': float(ping_data.group(3))})
                     ping_dict['success']['probes_sent'] += 1
                 except AttributeError:
                     if line in ('Target did not respond.', 'Request timed out.'):
@@ -571,7 +570,7 @@ class ProcurveDriver(NetworkDriver):
 
         for line in split_sntp.splitlines():
             split_line = line.split()
-            ntp_servers[unicode(split_line[server_idx])] = {}
+            ntp_servers[py23_compat.text_type(split_line[server_idx])] = {}
 
         return ntp_servers
 
@@ -620,7 +619,7 @@ class ProcurveDriver(NetworkDriver):
 
         for idx in if_types:
             if if_types[idx] == "6": # ethernetCsmacd(6)
-                interfaces[unicode(idx)] = {
+                interfaces[py23_compat.text_type(idx)] = {
                     'is_up': True if if_lnk_state[idx] == '1' else False,
                     'is_enabled': True if if_adm_state[idx] == '1' else False,
                     'description': py23_compat.text_type(if_names[idx]),
@@ -628,7 +627,6 @@ class ProcurveDriver(NetworkDriver):
                     'speed': int(if_speed[idx].replace(',', '')) / 1000 / 1000,
                     'mac_address': py23_compat.text_type(if_macs[idx])
                 }
-
         return interfaces
 
     def get_interfaces_counters(self):
@@ -651,7 +649,7 @@ class ProcurveDriver(NetworkDriver):
 
         for idx in if_types:
             if if_types[idx] == "6": # ethernetCsmacd(6)
-                interface_counters[unicode(idx)] = {
+                interface_counters[py23_compat.text_type(idx)] = {
                     'tx_errors': int(tx_errors[idx].replace(',', '')),
                     'rx_errors': int(rx_errors[idx].replace(',', '')),
                     'tx_discards': int(tx_discards[idx].replace(',', '')),
@@ -704,7 +702,5 @@ class ProcurveDriver(NetworkDriver):
                 key2 = self._sanitize_text(key1, 'erase')
                 entry["{}{}".format(cat, key1)] = value1
                 entry["{}{}".format(cat, key2)] = value2
-
-
         interfaces[entry['port']] = entry
         return interfaces
