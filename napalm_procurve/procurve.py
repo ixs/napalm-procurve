@@ -24,6 +24,7 @@ from __future__ import unicode_literals
 import difflib
 import re
 import socket
+import telnetlib
 
 from netmiko import ConnectHandler, FileTransfer, InLineTransfer
 from napalm.base.base import NetworkDriver
@@ -52,6 +53,7 @@ class ProcurveDriver(NetworkDriver):
 
         if optional_args is None:
             optional_args = {}
+        self.transport = optional_args.get('transport', 'ssh')
         self.hostname = hostname
         self.username = username
         self.password = password
@@ -91,7 +93,10 @@ class ProcurveDriver(NetworkDriver):
 
     def open(self):
         """Open a connection to the device."""
-        self.device = ConnectHandler(device_type='hp_procurve_ssh',
+        device_type = 'hp_procurve_ssh'
+        if self.transport == 'telnet':
+            device_type = 'hp_procurve_telnet'
+        self.device = ConnectHandler(device_type=device_type,
                                      host=self.hostname,
                                      username=self.username,
                                      password=self.password,
@@ -120,11 +125,24 @@ class ProcurveDriver(NetworkDriver):
             raise ConnectionClosedException(str(e))
 
     def is_alive(self):
-        """Returns a flag with the state of the SSH connection."""
-        return {
-            'is_alive': self.device.remote_conn.transport.is_active()
-        }
-
+        """ Returns a flag with the state of the connection."""
+        if self.device is None:
+            return {'is_alive': False}
+        try:
+            if self.transport == 'telnet':
+                # Try sending IAC + NOP (IAC is telnet way of sending command
+                # IAC = Interpret as Command (it comes before the NOP)
+                self.device.write_channel(telnetlib.IAC + telnetlib.NOP)
+                return {'is_alive': True}
+            else:
+                # SSH
+                # Try sending ASCII null byte to maintain the connection alive
+                null = chr(0)
+                self.device.write_channel(null)
+                return {'is_alive': self.device.remote_conn.transport.is_active()}
+        except (socket.error, EOFError, OSError):
+            # If unable to send, we can tell for sure that the connection is unusable
+            return {'is_alive': False}
 
     def cli(self, commands):
         """
