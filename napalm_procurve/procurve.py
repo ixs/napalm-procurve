@@ -664,6 +664,63 @@ class ProcurveDriver(NetworkDriver):
             arp_table.append(entry)
         return arp_table
 
+    def get_mac_address_table(self):
+        # Get mac table information
+        # The implementation is rather poor, as procurve doesn't list the vlan in the general list, this
+        # code first fetches the vlan list, then queries the mac address table for each vlan
+
+        mac_table = []
+
+        command = 'show vlan'
+        output = self._send_command(command)
+
+        if 'Invalid input' in output:
+            raise ValueError("Command not supported by network device")
+
+        try:
+            output = re.split(r'^  -----.*$', output,
+                              flags=re.M)[1].strip()
+        except IndexError:
+            return []
+
+        for line in output.splitlines():
+            if len(line.split("|")) == 2 and len(line.split("|")[0].split()) >= 2:
+                vlan_id = int(line.split("|")[0].split()[0])
+            elif len(line.split("|")) == 2:
+                raise ValueError("Unexpected output from: {}".format(line.split("|")[0].split()))
+            else:
+                raise ValueError("Unexpected output from: {}".format(line.split("|")))
+
+            command = 'show mac-address vlan ' + str(vlan_id)
+            output = self._send_command(command)
+
+            if 'Invalid input' in output:
+                raise ValueError("Command not supported by network device")
+
+            try:
+                output = re.split(r'^  -----.*$', output,
+                                  flags=re.M)[1].strip()
+            except IndexError:
+                return []
+
+            for line in output.splitlines():
+                if len(line.split()) == 2:
+                    mac, port = line.split()
+                else:
+                    raise ValueError("Unexpected output from: {}".format(line.split()))
+
+                entry = {
+                    'mac': napalm.base.helpers.mac(mac),
+                    'interface': port,
+                    'vlan': vlan_id,
+                    'active': True,
+                    'static': -1.0,
+                    'moves': -1.0,
+                    'last_move': -1.0
+                }
+                mac_table.append(entry)
+        return mac_table
+
     def get_interfaces(self):
         """Parse brief interface overview"""
         interfaces = {}
