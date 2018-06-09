@@ -1,0 +1,6 @@
+
+ Status and Counters - Address Table - VLAN 10
+
+  MAC Address   Located on Port
+  ------------- ---------------
+
