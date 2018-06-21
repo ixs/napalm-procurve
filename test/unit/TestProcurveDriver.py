@@ -17,7 +17,7 @@
 import unittest
 
 from napalm_procurve import procurve
-from napalm_base.test.base import TestConfigNetworkDriver
+from napalm.base.test.base import TestConfigNetworkDriver
 
 
 class TestConfigProcurveDriver(unittest.TestCase, TestConfigNetworkDriver):

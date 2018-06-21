@@ -1,0 +1,110 @@
+[
+  {
+    "vlan": 1,
+    "last_move": -1.0,
+    "interface": "47",
+    "mac": "00:0D:9D:F7:19:40",
+    "static": false,
+    "active": true,
+    "moves": -1
+  },
+  {
+    "vlan": 1,
+    "last_move": -1.0,
+    "interface": "47",
+    "mac": "00:11:0A:A7:3B:80",
+    "static": false,
+    "active": true,
+    "moves": -1
+  },
+  {
+    "vlan": 1,
+    "last_move": -1.0,
+    "interface": "Trk5",
+    "mac": "00:16:3E:3F:43:45",
+    "static": false,
+    "active": true,
+    "moves": -1
+  },
+  {
+    "vlan": 1,
+    "last_move": -1.0,
+    "interface": "Trk7",
+    "mac": "00:16:3E:3F:83:19",
+    "static": false,
+    "active": true,
+    "moves": -1
+  },
+  {
+    "vlan": 1,
+    "last_move": -1.0,
+    "interface": "20",
+    "mac": "00:16:3E:41:33:7E",
+    "static": false,
+    "active": true,
+    "moves": -1
+  },
+  {
+    "vlan": 60,
+    "last_move": -1.0,
+    "interface": "47",
+    "mac": "00:08:9B:C8:BF:F9",
+    "static": false,
+    "active": true,
+    "moves": -1
+  },
+  {
+    "vlan": 60,
+    "last_move": -1.0,
+    "interface": "Trk3",
+    "mac": "00:15:17:94:FA:EE",
+    "static": false,
+    "active": true,
+    "moves": -1
+  },
+  {
+    "vlan": 60,
+    "last_move": -1.0,
+    "interface": "Trk3",
+    "mac": "00:15:17:94:FA:EF",
+    "static": false,
+    "active": true,
+    "moves": -1
+  },
+  {
+    "vlan": 60,
+    "last_move": -1.0,
+    "interface": "Trk2",
+    "mac": "00:15:17:CF:46:DC",
+    "static": false,
+    "active": true,
+    "moves": -1
+  },
+  {
+    "vlan": 60,
+    "last_move": -1.0,
+    "interface": "23",
+    "mac": "00:E0:81:46:7F:DE",
+    "static": false,
+    "active": true,
+    "moves": -1
+  },
+  {
+    "vlan": 60,
+    "last_move": -1.0,
+    "interface": "Trk2",
+    "mac": "02:15:17:CF:46:DD",
+    "static": false,
+    "active": true,
+    "moves": -1
+  },
+  {
+    "vlan": 60,
+    "last_move": -1.0,
+    "interface": "Trk2",
+    "mac": "02:1B:A8:6F:F1:A2",
+    "static": false,
+    "active": true,
+    "moves": -1
+  }
+]

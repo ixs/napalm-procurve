@@ -26,16 +26,16 @@ import socket
 import telnetlib
 
 from netmiko import ConnectHandler, FileTransfer, InLineTransfer
-from napalm_base.base import NetworkDriver
-from napalm_base.exceptions import (
+from napalm.base.base import NetworkDriver
+from napalm.base.exceptions import (
     CommandErrorException,
     ConnectionClosedException,
     ConnectionException,
 )
 
-from napalm_base.utils import py23_compat
-import napalm_base.constants as C
-import napalm_base.helpers
+from napalm.base.utils import py23_compat
+import napalm.base.constants as C
+import napalm.base.helpers
 
 
 class ProcurveDriver(NetworkDriver):
@@ -657,7 +657,7 @@ class ProcurveDriver(NetworkDriver):
 
             entry = {
                 'interface': py23_compat.text_type(port),
-                'mac': napalm_base.helpers.mac(mac),
+                'mac': napalm.base.helpers.mac(mac),
                 'ip': py23_compat.text_type(address),
                 'age': 0.0
             }
@@ -665,13 +665,11 @@ class ProcurveDriver(NetworkDriver):
         return arp_table
 
     def get_mac_address_table(self):
-        # Get mac table information
-        # The implementation is rather poor, as procurve doesn't list the vlan in the general list, this
-        # code first fetches the vlan list, then queries the mac address table for each vlan
+        """ Get mac table information """
 
         mac_table = []
 
-        command = 'show vlan'
+        command = 'show vlans'
         output = self._send_command(command)
 
         if 'Invalid input' in output:
@@ -684,12 +682,8 @@ class ProcurveDriver(NetworkDriver):
             return []
 
         for line in output.splitlines():
-            if len(line.split("|")) == 2 and len(line.split("|")[0].split()) >= 2:
-                vlan_id = int(line.split("|")[0].split()[0])
-            elif len(line.split("|")) == 2:
-                raise ValueError("Unexpected output from: {}".format(line.split("|")[0].split()))
-            else:
-                raise ValueError("Unexpected output from: {}".format(line.split("|")))
+            # Example:  1              DEFAULT_VLAN Port-based   No    No
+            vlan_id = line.strip().split()[0]
 
             command = 'show mac-address vlan ' + str(vlan_id)
             output = self._send_command(command)
@@ -701,21 +695,21 @@ class ProcurveDriver(NetworkDriver):
                 output = re.split(r'^  -----.*$', output,
                                   flags=re.M)[1].strip()
             except IndexError:
-                return []
+                continue
 
             for line in output.splitlines():
-                if len(line.split()) == 2:
-                    mac, port = line.split()
-                else:
-                    raise ValueError("Unexpected output from: {}".format(line.split()))
+                try:
+                  mac, port = line.split()
+                except IndexError:
+                    raise ValueError("Unexpected output from: {}".format(line))
 
                 entry = {
                     'mac': napalm.base.helpers.mac(mac),
                     'interface': port,
-                    'vlan': vlan_id,
+                    'vlan': int(vlan_id),
                     'active': True,
-                    'static': -1.0,
-                    'moves': -1.0,
+                    'static': False,
+                    'moves': -1,
                     'last_move': -1.0
                 }
                 mac_table.append(entry)
