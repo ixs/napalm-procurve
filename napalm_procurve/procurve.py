@@ -11,7 +11,6 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations under
 # the License.
-
 """
 Napalm driver for HP ProCurve devices
 
@@ -27,22 +26,26 @@ import socket
 import telnetlib
 
 from netmiko import ConnectHandler, FileTransfer, InLineTransfer
-from napalm.base.base import NetworkDriver
-from napalm.base.exceptions import (
+from napalm_base.base import NetworkDriver
+from napalm_base.exceptions import (
     CommandErrorException,
     ConnectionClosedException,
     ConnectionException,
-    )
+)
 
-from napalm.base.utils import py23_compat
-import napalm.base.constants as C
-import napalm.base.helpers
+from napalm_base.utils import py23_compat
+import napalm_base.constants as C
+import napalm_base.helpers
 
 
 class ProcurveDriver(NetworkDriver):
     """Napalm driver for ProCurve."""
 
-    def __init__(self, hostname, username, password, timeout=60,
+    def __init__(self,
+                 hostname,
+                 username,
+                 password,
+                 timeout=60,
                  optional_args=None):
         """Constructor."""
         self.device = None
@@ -96,11 +99,12 @@ class ProcurveDriver(NetworkDriver):
         device_type = 'hp_procurve_ssh'
         if self.transport == 'telnet':
             device_type = 'hp_procurve_telnet'
-        self.device = ConnectHandler(device_type=device_type,
-                                     host=self.hostname,
-                                     username=self.username,
-                                     password=self.password,
-                                     **self.netmiko_optional_args)
+        self.device = ConnectHandler(
+            device_type=device_type,
+            host=self.hostname,
+            username=self.username,
+            password=self.password,
+            **self.netmiko_optional_args)
         # ensure in enable mode
         self.device.enable()
 
@@ -139,7 +143,9 @@ class ProcurveDriver(NetworkDriver):
                 # Try sending ASCII null byte to maintain the connection alive
                 null = chr(0)
                 self.device.write_channel(null)
-                return {'is_alive': self.device.remote_conn.transport.is_active()}
+                return {
+                    'is_alive': self.device.remote_conn.transport.is_active()
+                }
         except (socket.error, EOFError, OSError):
             # If unable to send, we can tell for sure that the connection is unusable
             return {'is_alive': False}
@@ -161,8 +167,8 @@ class ProcurveDriver(NetworkDriver):
         for command in commands:
             output = self._send_command(command)
             if 'Invalid input:' in output:
-                raise ValueError('Unable to execute command "{}"'.format(
-                                 command))
+                raise ValueError(
+                    'Unable to execute command "{}"'.format(command))
             cli_output.setdefault(command, {})
             cli_output[command] = output
 
@@ -223,7 +229,8 @@ class ProcurveDriver(NetworkDriver):
         show_int_br = self._send_command('show interfaces brief')
 
         uptime = dict(zip(("d", "h", "m", "s"), show_uptime.split(':')))
-        uptime_seconds = int(float(uptime["s"])) + int(uptime["m"]) * 60 + int(uptime["h"]) * 60 * 60 + int(uptime["d"]) * 60 * 60 * 24
+        uptime_seconds = int(float(uptime["s"])) + int(uptime["m"]) * 60 + int(
+            uptime["h"]) * 60 * 60 + int(uptime["d"]) * 60 * 60 * 24
 
         for line in show_system.splitlines():
             if ' System Name ' in line:
@@ -287,17 +294,22 @@ class ProcurveDriver(NetworkDriver):
             if '...' in lldp_entry:
                 # ... means something got truncated, we need to look at
                 # the details to get the full output
-                remote_port, device_id = self._get_lldp_neighbors_detail(local_port)
+                remote_port, device_id = self._get_lldp_neighbors_detail(
+                    local_port)
             try:
                 (local_port, delim, r_01, r_02, r_03, r_04, r_05, r_06,
-                 remote_port, remote_port_desc, device_id) = lldp_entry.split()
+                 remote_port, remote_port_desc,
+                 device_id) = lldp_entry.split()
                 chassis_id = '{}:{}:{}:{}:{}:{}'.format(
-                             r_01, r_02, r_03, r_04, r_05, r_06)
+                    r_01, r_02, r_03, r_04, r_05, r_06)
             except ValueError:
-                remote_port, device_id = self._get_lldp_neighbors_detail(local_port)
+                remote_port, device_id = self._get_lldp_neighbors_detail(
+                    local_port)
 
-            entry = {'port': py23_compat.text_type(remote_port),
-                     'hostname': py23_compat.text_type(device_id)}
+            entry = {
+                'port': py23_compat.text_type(remote_port),
+                'hostname': py23_compat.text_type(device_id)
+            }
             lldp.setdefault(local_port, [])
             lldp[local_port].append(entry)
 
@@ -327,14 +339,23 @@ class ProcurveDriver(NetworkDriver):
 
             lldp.setdefault(local_port, [])
             lldp[local_port].append({
-                'parent_interface': u'N/A',
-                'remote_port': lldp_fields["PortId"],
-                'remote_port_description': lldp_fields["PortDescr"],
-                'remote_chassis_id': lldp_fields["ChassisId"],
-                'remote_system_name': lldp_fields["SysName"],
-                'remote_system_description': lldp_fields["SystemDescr"],
-                'remote_system_capab': lldp_fields["SystemCapabilitiesSupported"],
-                'remote_system_enable_capab': lldp_fields["SystemCapabilitiesEnabled"]})
+                'parent_interface':
+                u'N/A',
+                'remote_port':
+                lldp_fields["PortId"],
+                'remote_port_description':
+                lldp_fields["PortDescr"],
+                'remote_chassis_id':
+                lldp_fields["ChassisId"],
+                'remote_system_name':
+                lldp_fields["SysName"],
+                'remote_system_description':
+                lldp_fields["SystemDescr"],
+                'remote_system_capab':
+                lldp_fields["SystemCapabilitiesSupported"],
+                'remote_system_enable_capab':
+                lldp_fields["SystemCapabilitiesEnabled"]
+            })
 
         return lldp
 
@@ -360,8 +381,8 @@ class ProcurveDriver(NetworkDriver):
             if key == 'System Descr' and value.endswith('...'):
                 # Procurve OS truncated the entry, thanks. Fetch full value
                 # from the MIB
-                value = self._getMIB_value('lldpRemSysDesc.0.{}.1'.format(
-                        interface))
+                value = self._getMIB_value(
+                    'lldpRemSysDesc.0.{}.1'.format(interface))
 
             if key in ('Type', 'Address'):
                 key = "AdmMgmt{}".format(key)
@@ -395,18 +416,16 @@ class ProcurveDriver(NetworkDriver):
         environment['cpu'][0] = {}
         environment['cpu'][0]['%usage'] = 0.0
         try:
-            environment['cpu'][0]['%usage'] = float(show_cpu_1m.split(
-                                              '/')[0].strip())
-        except:
+            environment['cpu'][0]['%usage'] = float(
+                show_cpu_1m.split('/')[0].strip())
+        except KeyError:
             pass
 
         environment.setdefault('memory', {})
-        environment['memory']['used_ram'] = int(self._getMIB_value(
-                                            'hpLocalMemAllocBytes.1'
-                                            ).replace(',', ''))
-        environment['memory']['available_ram'] = int(self._getMIB_value(
-                                                 'hpLocalMemFreeBytes.1'
-                                                 ).replace(',', ''))
+        environment['memory']['used_ram'] = int(
+            self._getMIB_value('hpLocalMemAllocBytes.1').replace(',', ''))
+        environment['memory']['available_ram'] = int(
+            self._getMIB_value('hpLocalMemFreeBytes.1').replace(',', ''))
 
         # Initialize 'power', 'fan', and 'temperature' to default values
         environment.setdefault('power', {})
@@ -429,16 +448,18 @@ class ProcurveDriver(NetworkDriver):
                 env_value = {'status': True if sreport == 'good' else False}
             elif stype == 'icfTemperatureSensor':
                 env_category = 'temperature'
-                env_value = {'temperature': -1.0,
-                             'is_alert': True if sreport == 'warning'
-                             else False,
-                             'is_critical': True if sreport == 'bad'
-                             else False}
+                env_value = {
+                    'temperature': -1.0,
+                    'is_alert': True if sreport == 'warning' else False,
+                    'is_critical': True if sreport == 'bad' else False
+                }
             elif stype == 'icfPowerSupplySensor':
                 env_category = 'power'
-                env_value = {'capacity': -1.0,
-                             'output': -1.0,
-                             'status': True if sreport == 'good' else False}
+                env_value = {
+                    'capacity': -1.0,
+                    'output': -1.0,
+                    'status': True if sreport == 'good' else False
+                }
             else:
                 continue
             environment[env_category][sname] = env_value
@@ -454,13 +475,15 @@ class ProcurveDriver(NetworkDriver):
 
         if retrieve.lower() in ['running', 'all']:
             running_config = self._send_command('show running-config')
-            running_config = re.split(r'^; .* Configuration Editor;.*$', running_config,
-                                    flags=re.M)[1].strip()
+            running_config = re.split(
+                r'^; .* Configuration Editor;.*$', running_config,
+                flags=re.M)[1].strip()
             config['running'] = py23_compat.text_type(running_config)
         if retrieve.lower() in ['startup', 'all']:
             startup_config = self._send_command('show config')
-            startup_config = re.split(r'^; .* Configuration Editor;.*$', startup_config,
-                                    flags=re.M)[1].strip()
+            startup_config = re.split(
+                r'^; .* Configuration Editor;.*$', startup_config,
+                flags=re.M)[1].strip()
             config['startup'] = py23_compat.text_type(startup_config)
         return config
 
@@ -474,8 +497,14 @@ class ProcurveDriver(NetworkDriver):
         ping_caps = re.findall(r"^   o \[?([-\w]+)\]? ", ping_help, flags=re.M)
         return ping_caps
 
-    def ping(self, destination, source=C.PING_SOURCE, ttl=C.PING_TTL, timeout=C.PING_TIMEOUT,
-             size=C.PING_SIZE, count=C.PING_COUNT, vrf=C.PING_VRF):
+    def ping(self,
+             destination,
+             source=C.PING_SOURCE,
+             ttl=C.PING_TTL,
+             timeout=C.PING_TIMEOUT,
+             size=C.PING_SIZE,
+             count=C.PING_COUNT,
+             vrf=C.PING_VRF):
         """Execute ping on the device and returns a dictionary with the result."""
 
         ping_dict = {}
@@ -498,35 +527,58 @@ class ProcurveDriver(NetworkDriver):
             ping_dict['error'] = (output)
         else:
             ping_dict['success'] = {
-                                'probes_sent': 0,
-                                'packet_loss': 0,
-                                'rtt_min': 0.0,
-                                'rtt_max': 0.0,
-                                'rtt_avg': 0.0,
-                                'rtt_stddev': 0.0,
-                                'results': []
+                'probes_sent': 0,
+                'packet_loss': 0,
+                'rtt_min': 0.0,
+                'rtt_max': 0.0,
+                'rtt_avg': 0.0,
+                'rtt_stddev': 0.0,
+                'results': []
             }
 
             # Parse ping output
             for line in output.splitlines():
                 try:
-                    ping_data = re.search(r"^(.*) is alive, iteration (\d+), time = (\d+) ms$", line, flags=re.M)
-                    ping_dict['success']['results'].append({'ip_address': py23_compat.text_type(ping_data.group(1)), 'rtt': float(ping_data.group(3))})
+                    ping_data = re.search(
+                        r"^(.*) is alive, iteration (\d+), time = (\d+) ms$",
+                        line,
+                        flags=re.M)
+                    ping_dict['success']['results'].append({
+                        'ip_address':
+                        py23_compat.text_type(ping_data.group(1)),
+                        'rtt':
+                        float(ping_data.group(3))
+                    })
                     ping_dict['success']['probes_sent'] += 1
                 except AttributeError:
-                    if line in ('Target did not respond.', 'Request timed out.'):
+                    if line in ('Target did not respond.',
+                                'Request timed out.'):
                         ping_dict['success']['probes_sent'] += 1
                         ping_dict['success']['packet_loss'] += 1
                     elif 'packets transmitted,' in line:
                         # The switch displays summary information, use that.
-                        ping_data = re.search(r"^(\d+) packets transmitted, (\d+) packets received, (\d+)% packet loss$", line, flags=re.M)
-                        ping_dict['success']['probes_sent'] = int(ping_data.group(1))
-                        ping_dict['success']['packet_loss'] = ping_dict['success']['probes_sent'] - int(ping_data.group(2))
+                        ping_data = re.search(
+                            r"^(\d+) packets transmitted, (\d+) packets received, (\d+)% packet loss$",
+                            line,
+                            flags=re.M)
+                        ping_dict['success']['probes_sent'] = int(
+                            ping_data.group(1))
+                        ping_dict['success'][
+                            'packet_loss'] = ping_dict['success']['probes_sent'] - int(
+                                ping_data.group(2))
                     elif 'round-trip (ms) min/avg/max' in line:
-                        ping_data = re.search(r"^round-trip \(ms\) min/avg/max = (\d+)/(\d+)/(\d+)$", line, flags=re.M)
-                        ping_dict['success'].update({'rtt_min': float(ping_data.group(1)),
-                                                     'rtt_avg': float(ping_data.group(2)),
-                                                     'rtt_max': float(ping_data.group(3))})
+                        ping_data = re.search(
+                            r"^round-trip \(ms\) min/avg/max = (\d+)/(\d+)/(\d+)$",
+                            line,
+                            flags=re.M)
+                        ping_dict['success'].update({
+                            'rtt_min':
+                            float(ping_data.group(1)),
+                            'rtt_avg':
+                            float(ping_data.group(2)),
+                            'rtt_max':
+                            float(ping_data.group(3))
+                        })
                     else:
                         pass
 
@@ -534,15 +586,22 @@ class ProcurveDriver(NetworkDriver):
             if ping_dict['success']['rtt_max'] == 0.0:
                 # Looks like the device is older and does not provide summary
                 # data. Calulate ourselves.
-                ping_dict['success'].update({'rtt_min': float(min(rtt_vals)),
-                                             'rtt_avg': sum(rtt_vals) / float(len(rtt_vals)),
-                                             'rtt_max': float(max(rtt_vals))})
+                ping_dict['success'].update({
+                    'rtt_min':
+                    float(min(rtt_vals)),
+                    'rtt_avg':
+                    sum(rtt_vals) / float(len(rtt_vals)),
+                    'rtt_max':
+                    float(max(rtt_vals))
+                })
 
             # Calculate the std deviation
             if len(ping_dict['success']['results']) > 2:
-                ss = sum([(x-ping_dict['success']['rtt_avg'])**2 for x in rtt_vals])
-                pvar = ss/len(ping_dict['success']['results'])
-                ping_dict['success']['rtt_stddev'] = float("{:.4f}".format(pvar**0.5))
+                ss = sum([(x - ping_dict['success']['rtt_avg'])**2
+                          for x in rtt_vals])
+                pvar = ss / len(ping_dict['success']['results'])
+                ping_dict['success']['rtt_stddev'] = float("{:.4f}".format(
+                    pvar**0.5))
 
         return ping_dict
 
@@ -557,16 +616,16 @@ class ProcurveDriver(NetworkDriver):
             raise ValueError("Command not supported by network device")
 
         try:
-            split_sntp = re.split(r'^  -----.*$', output,
-                                    flags=re.M)[1].strip()
+            split_sntp = re.split(
+                r'^  -----.*$', output, flags=re.M)[1].strip()
 
         except IndexError:
             return {}
 
         if 'Priority' in output:
-            server_idx=1
+            server_idx = 1
         else:
-            server_idx=0
+            server_idx = 0
 
         for line in split_sntp.splitlines():
             split_line = line.split()
@@ -585,8 +644,7 @@ class ProcurveDriver(NetworkDriver):
             raise ValueError("Command not supported by network device")
 
         try:
-            output = re.split(r'^  -----.*$', output,
-                              flags=re.M)[1].strip()
+            output = re.split(r'^  -----.*$', output, flags=re.M)[1].strip()
         except IndexError:
             return []
 
@@ -594,11 +652,12 @@ class ProcurveDriver(NetworkDriver):
             if len(line.split()) == 4:
                 address, mac, eth_type, port = line.split()
             else:
-                raise ValueError("Unexpected output from: {}".format(line.split()))
+                raise ValueError("Unexpected output from: {}".format(
+                    line.split()))
 
             entry = {
                 'interface': py23_compat.text_type(port),
-                'mac': napalm.base.helpers.mac(mac),
+                'mac': napalm_base.helpers.mac(mac),
                 'ip': py23_compat.text_type(address),
                 'age': 0.0
             }
@@ -618,12 +677,13 @@ class ProcurveDriver(NetworkDriver):
         if_last_change = self._walkMIB_values('ifLastChange')
 
         for idx in if_types:
-            if if_types[idx] == "6": # ethernetCsmacd(6)
+            if if_types[idx] == "6":  # ethernetCsmacd(6)
                 interfaces[py23_compat.text_type(idx)] = {
                     'is_up': True if if_lnk_state[idx] == '1' else False,
                     'is_enabled': True if if_adm_state[idx] == '1' else False,
                     'description': py23_compat.text_type(if_names[idx]),
-                    'last_flapped': -1.0, # Data makes no sense... unsupported for now.
+                    'last_flapped':
+                    -1.0,  # Data makes no sense... unsupported for now.
                     'speed': int(if_speed[idx].replace(',', '')) / 1000 / 1000,
                     'mac_address': py23_compat.text_type(if_macs[idx])
                 }
@@ -648,7 +708,7 @@ class ProcurveDriver(NetworkDriver):
         rx_b_pkts = self._walkMIB_values('ifInBroadcastPkts')
 
         for idx in if_types:
-            if if_types[idx] == "6": # ethernetCsmacd(6)
+            if if_types[idx] == "6":  # ethernetCsmacd(6)
                 interface_counters[py23_compat.text_type(idx)] = {
                     'tx_errors': int(tx_errors[idx].replace(',', '')),
                     'rx_errors': int(rx_errors[idx].replace(',', '')),
@@ -658,10 +718,14 @@ class ProcurveDriver(NetworkDriver):
                     'rx_octets': int(rx_octets[idx].replace(',', '')),
                     'tx_unicast_packets': int(tx_u_pkts[idx].replace(',', '')),
                     'rx_unicast_packets': int(rx_u_pkts[idx].replace(',', '')),
-                    'tx_multicast_packets': int(tx_m_pkts[idx].replace(',', '')),
-                    'rx_multicast_packets': int(rx_m_pkts[idx].replace(',', '')),
-                    'tx_broadcast_packets': int(tx_b_pkts[idx].replace(',', '')),
-                    'rx_broadcast_packets': int(rx_b_pkts[idx].replace(',', ''))
+                    'tx_multicast_packets': int(tx_m_pkts[idx].replace(
+                        ',', '')),
+                    'rx_multicast_packets': int(rx_m_pkts[idx].replace(
+                        ',', '')),
+                    'tx_broadcast_packets': int(tx_b_pkts[idx].replace(
+                        ',', '')),
+                    'rx_broadcast_packets': int(rx_b_pkts[idx].replace(
+                        ',', ''))
                 }
 
         return interface_counters

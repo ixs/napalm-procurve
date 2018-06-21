@@ -1,4 +1,6 @@
 """Tests for getters."""
+from __future__ import print_function
+from __future__ import unicode_literals
 
 from napalm_base.test.getters import BaseTestGetters
 

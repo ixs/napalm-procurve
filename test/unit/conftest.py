@@ -1,10 +1,14 @@
 """Test fixtures."""
+from __future__ import print_function
+from __future__ import unicode_literals
+
 from builtins import super
 
 import pytest
 from napalm_base.test import conftest as parent_conftest
 
 from napalm_base.test.double import BaseTestDouble
+from napalm_base.utils import py23_compat
 
 from napalm_procurve import procurve
 
@@ -37,7 +41,6 @@ class PatchedProcurveDriver(procurve.ProcurveDriver):
         self.patched_attrs = ['device']
         self.device = FakeProcurveDevice()
 
-
     def disconnect(self):
         pass
 
@@ -51,16 +54,14 @@ class PatchedProcurveDriver(procurve.ProcurveDriver):
 
 
 class FakeProcurveDevice(BaseTestDouble):
-    """Skeleton device test double."""
+    """Procurve device test double."""
 
     def send_command(self, command):
         """Fake run_commands."""
         filename = '{}.{}'.format(self.sanitize_text(command), 'txt')
         full_path = self.find_file(filename)
-
         result = self.read_txt_file(full_path)
-
-        return result
+        return py23_compat.text_type(result)
 
     def disconnect(self):
         pass
