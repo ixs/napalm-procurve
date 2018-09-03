@@ -1,0 +1,11 @@
+
+ Status and Counters - Address Table - VLAN 1
+
+  MAC Address   Located on Port
+  ------------- ---------------
+  000d9d-f71940 47
+  00110a-a73b80 47
+  00163e-3f4345 Trk5
+  00163e-3f8319 Trk7
+  00163e-41337e 20
+

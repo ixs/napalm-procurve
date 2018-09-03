@@ -1,0 +1,13 @@
+
+ Status and Counters - Address Table - VLAN 60
+
+  MAC Address   Located on Port
+  ------------- ---------------
+  00089b-c8bff9 47
+  001517-94faee Trk3
+  001517-94faef Trk3
+  001517-cf46dc Trk2
+  00e081-467fde 23
+  021517-cf46dd Trk2
+  021ba8-6ff1a2 Trk2
+
