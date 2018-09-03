@@ -683,7 +683,10 @@ class ProcurveDriver(NetworkDriver):
 
         for line in output.splitlines():
             # Example:  1              DEFAULT_VLAN Port-based   No    No
-            vlan_id = line.strip().split()[0]
+            try:
+                vlan_id = line.strip().split()[0]
+            except IndexError:
+                continue
 
             command = 'show mac-address vlan ' + str(vlan_id)
             output = self._send_command(command)
