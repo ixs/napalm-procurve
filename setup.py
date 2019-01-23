@@ -14,14 +14,16 @@ reqs = [str(ir.req) for ir in install_reqs]
 
 setup(
     name="napalm-procurve",
-    version="0.2.0",
+    version="0.3.1",
     packages=find_packages(),
     author="Andreas Thienemann",
     author_email="andreas@bawue.net",
-    description="Network Automation and Programmability Abstraction Layer with Multivendor support",
+    description="Network Automation and Programmability Abstraction Layer (NAPALM) ProCurve driver",
+    long_description="ProCurve driver support for Napalm network automation.",
     classifiers=[
         'Topic :: Utilities',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
         'Operating System :: POSIX :: Linux',
         'Operating System :: MacOS',
     ],
