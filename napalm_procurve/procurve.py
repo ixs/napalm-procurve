@@ -190,6 +190,8 @@ class ProcurveDriver(NetworkDriver):
         # Check if system supports the command
         if 'No such name.' in output:
             return {}
+        elif 'not translate variable' in output:
+            return {}
 
         return output.split(' = ')[1].strip()
 
