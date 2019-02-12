@@ -5,9 +5,13 @@
             "remote_chassis_id": "00 25 90 3d c3 1f",
             "remote_port": "eth0",
             "remote_port_description": "eth0",
-            "remote_system_capab": "station-only",
+            "remote_system_capab": [
+              "station-only"
+            ],
             "remote_system_description": "armv5tejl/Linux 2.6.17.WB_WPCM450.1.3",
-            "remote_system_enable_capab": "station-only",
+            "remote_system_enable_capab": [
+              "station-only"
+            ],
             "remote_system_name": "(none).(none)"
         }
     ],
@@ -17,9 +21,14 @@
             "remote_chassis_id": "00 11 0a a7 3b 80",
             "remote_port": "45",
             "remote_port_description": "45",
-            "remote_system_capab": "bridge, router",
+            "remote_system_capab": [
+              "bridge",
+              "router"
+            ],
             "remote_system_description": "ProCurve J4904A Switch 2848, revision I.10.105, ROM I.08.07 (/sw/code/build/mako)",
-            "remote_system_enable_capab": "bridge",
+            "remote_system_enable_capab": [
+              "bridge"
+            ],
             "remote_system_name": "bb-ext-switch"
         }
     ],
@@ -29,9 +38,14 @@
             "remote_chassis_id": "00 11 0a a7 3b 80",
             "remote_port": "46",
             "remote_port_description": "46",
-            "remote_system_capab": "bridge, router",
+            "remote_system_capab": [
+              "bridge",
+              "router"
+            ],
             "remote_system_description": "ProCurve J4904A Switch 2848, revision I.10.105, ROM I.08.07 (/sw/code/build/mako)",
-            "remote_system_enable_capab": "bridge",
+            "remote_system_enable_capab": [
+              "bridge"
+            ],
             "remote_system_name": "bb-ext-switch"
         }
     ]

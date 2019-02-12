@@ -389,6 +389,10 @@ class ProcurveDriver(NetworkDriver):
             if 'Power' in key or 'Poe' in key:
                 key = "Poe{}".format(key)
 
+            if key in ('System Capabilities Supported', 'System Capabilities Enabled'):
+                # Parse string values into a list
+                value = list(map(lambda x: x.strip(), value.split(',')))
+
             key = self._sanitize_text(key, 'erase')
 
             lldp[key] = value
@@ -738,7 +742,7 @@ class ProcurveDriver(NetworkDriver):
                     'description': py23_compat.text_type(if_names[idx]),
                     'last_flapped':
                     -1.0,  # Data makes no sense... unsupported for now.
-                    'speed': int(if_speed[idx].replace(',', '')) / 1000 / 1000,
+                    'speed': int(int(if_speed[idx].replace(',', '')) / 1000 / 1000),
                     'mac_address': py23_compat.text_type(if_macs[idx])
                 }
         return interfaces
