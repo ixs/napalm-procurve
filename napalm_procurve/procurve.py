@@ -1,4 +1,4 @@
-# Copyright 2017 Andreas Thienemann. All rights reserved.
+# Copyright 2017-2019 Andreas Thienemann. All rights reserved.
 #
 # The contents of this file are licensed under the Apache License, Version 2.0
 # (the "License"); you may not use this file except in compliance with the
@@ -22,6 +22,7 @@ from __future__ import unicode_literals
 
 import difflib
 import re
+import sys
 import socket
 import telnetlib
 
@@ -214,6 +215,12 @@ class ProcurveDriver(NetworkDriver):
 
         return mibs
 
+    def _get_interface_map(self):
+        """Build an interface map that matches interface name to interface index id"""
+        if len(self.interface_map) < 1 or "pytest" in sys.modules:
+            self.interface_map = {v: k for k, v in self._walkMIB_values('ifName').items()}
+        return self.interface_map
+
     def get_facts(self):
         """Return a set of facts from the devices."""
         # default values.
@@ -291,20 +298,22 @@ class ProcurveDriver(NetworkDriver):
         for lldp_entry in split_output.splitlines():
             # Example, 1         | 00 25 90 3d c3 1f         eth0   eth0      (none).(none)
             local_port = lldp_entry.strip().split(' ', 1)[0].strip()
+
             if '...' in lldp_entry:
                 # ... means something got truncated, we need to look at
                 # the details to get the full output
                 remote_port, device_id = self._get_lldp_neighbors_detail(
                     local_port)
-            try:
-                (local_port, delim, r_01, r_02, r_03, r_04, r_05, r_06,
-                 remote_port, remote_port_desc,
-                 device_id) = lldp_entry.split()
-                chassis_id = '{}:{}:{}:{}:{}:{}'.format(
-                    r_01, r_02, r_03, r_04, r_05, r_06)
-            except ValueError:
-                remote_port, device_id = self._get_lldp_neighbors_detail(
-                    local_port)
+            else:
+                try:
+                    (local_port, delim, r_01, r_02, r_03, r_04, r_05, r_06,
+                     remote_port, remote_port_desc,
+                     device_id) = lldp_entry.split()
+                    chassis_id = '{}:{}:{}:{}:{}:{}'.format(
+                        r_01, r_02, r_03, r_04, r_05, r_06)
+                except ValueError:
+                    remote_port, device_id = self._get_lldp_neighbors_detail(
+                        local_port)
 
             entry = {
                 'port': py23_compat.text_type(remote_port),
@@ -364,9 +373,28 @@ class ProcurveDriver(NetworkDriver):
         return (tmp_lldp_details['PortId'], tmp_lldp_details['SysName'])
 
     def _lldp_detail_parser(self, interface):
+        """Parse lldp details"""
         lldp = {}
+        ifs = self._get_interface_map()
+
         command = "show lldp info remote-device ethernet {}".format(interface)
         output = self._send_command(command)
+
+        key_mib_table = {'System Descr': 'lldpRemSysDesc',
+                         'PortId': 'lldpRemPortId',
+                         'PortType': 'lldpRemPortIdSubtype',
+                         'PortDescr': 'lldpRemPortDesc',
+                         'SysName': 'lldpRemSysName'}
+
+        key_porttype_table = {1: 'interfaceAlias',
+                              2: 'portComponent',
+                              3: 'macAddress',
+                              4: 'networkAddress',
+                              5: 'interfaceName',
+                              6: 'agentCircuitId',
+                              7: 'local'}
+
+
 
         # Check if router supports the command
         if 'Invalid input' in output:
@@ -378,12 +406,14 @@ class ProcurveDriver(NetworkDriver):
             except ValueError:
                 continue
 
-            if key == 'System Descr' and value.endswith('...'):
+            if value.endswith('...'):
                 # Procurve OS truncated the entry, thanks. Fetch full value
                 # from the MIB
                 value = self._getMIB_value(
-                    'lldpRemSysDesc.0.{}.1'.format(interface))
+                    '{}.0.{}.1'.format(key_mib_table[key], ifs[interface]))
 
+            if key == 'PortType' and len(value) == 1:
+                value = key_porttype_table[int(value)]
             if key in ('Type', 'Address'):
                 key = "AdmMgmt{}".format(key)
             if 'Power' in key or 'Poe' in key:
@@ -728,21 +758,22 @@ class ProcurveDriver(NetworkDriver):
     def get_interfaces(self):
         """Parse brief interface overview"""
         interfaces = {}
+        ifs = self._get_interface_map()
 
         if_types = self._walkMIB_values('ifType')
-        if_names = self._walkMIB_values('ifAlias')
+        if_alias = self._walkMIB_values('ifAlias')
         if_speed = self._walkMIB_values('ifSpeed')
         if_macs = self._walkMIB_values('ifPhysAddress')
         if_adm_state = self._walkMIB_values('ifAdminStatus')
         if_lnk_state = self._walkMIB_values('ifOperStatus')
         if_last_change = self._walkMIB_values('ifLastChange')
 
-        for idx in if_types:
+        for ifn, idx in ifs.items():
             if if_types[idx] == "6":  # ethernetCsmacd(6)
-                interfaces[py23_compat.text_type(idx)] = {
+                interfaces[py23_compat.text_type(ifn)] = {
                     'is_up': True if if_lnk_state[idx] == '1' else False,
                     'is_enabled': True if if_adm_state[idx] == '1' else False,
-                    'description': py23_compat.text_type(if_names[idx]),
+                    'description': py23_compat.text_type(if_alias[idx]),
                     'last_flapped':
                     -1.0,  # Data makes no sense... unsupported for now.
                     'speed': int(int(if_speed[idx].replace(',', '')) / 1000 / 1000),
@@ -753,6 +784,7 @@ class ProcurveDriver(NetworkDriver):
     def get_interfaces_counters(self):
         """Return all interface counters"""
         interface_counters = {}
+        ifs = self._get_interface_map()
 
         if_types = self._walkMIB_values('ifType')
         tx_errors = self._walkMIB_values('ifOutErrors')
@@ -768,9 +800,9 @@ class ProcurveDriver(NetworkDriver):
         tx_b_pkts = self._walkMIB_values('ifOutBroadcastPkts')
         rx_b_pkts = self._walkMIB_values('ifInBroadcastPkts')
 
-        for idx in if_types:
+        for ifn, idx in ifs.items():
             if if_types[idx] == "6":  # ethernetCsmacd(6)
-                interface_counters[py23_compat.text_type(idx)] = {
+                interface_counters[py23_compat.text_type(ifn)] = {
                     'tx_errors': int(tx_errors[idx].replace(',', '')),
                     'rx_errors': int(rx_errors[idx].replace(',', '')),
                     'tx_discards': int(tx_discards[idx].replace(',', '')),

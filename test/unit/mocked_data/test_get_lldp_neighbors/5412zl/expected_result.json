@@ -1,0 +1,32 @@
+{
+    "A1": [
+        {
+            "hostname": "sw123",
+            "port": "48"
+        }
+    ],
+    "A7": [
+        {
+            "hostname": "sw234",
+            "port": "48"
+        }
+    ],
+    "A10": [
+        {
+            "hostname": "sw345",
+            "port": "48"
+        }
+    ],
+    "A11": [
+        {
+            "hostname": "sw456",
+            "port": "48"
+        }
+    ],
+    "A13": [
+        {
+            "hostname": "sw567",
+            "port": "M-GigabitEthernet1/0/0/0"
+        }
+    ]
+}

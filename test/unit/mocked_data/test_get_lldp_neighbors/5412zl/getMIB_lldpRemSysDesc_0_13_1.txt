@@ -1,0 +1,1 @@
+lldpRemSysDesc.0.13.1 = HPE Comware Platform Software, Software Version 7.1.070, Release 2712

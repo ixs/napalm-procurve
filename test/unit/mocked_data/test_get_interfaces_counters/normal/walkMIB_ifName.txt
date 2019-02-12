@@ -1,0 +1,7 @@
+ifName.1 = 1
+ifName.2 = 2
+ifName.3 = 3
+ifName.4 = 4
+ifName.5 = 5
+ifName.6 = 6
+ifName.7 = 7

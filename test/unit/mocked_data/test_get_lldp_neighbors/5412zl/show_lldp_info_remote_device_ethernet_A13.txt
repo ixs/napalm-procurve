@@ -1,0 +1,27 @@
+ LLDP Remote Device Information Detail
+
+  Local Port   : A13
+  ChassisType  : mac-address         
+  ChassisId    : 00 00 00 00 00 00        
+  PortType     : interface-name                                             
+  PortId       : M-GigabitEthernet1/0/0/0                                  
+  SysName      : sw567                             
+  System Descr : HPE Comware Platform Software, Software Version 7.1.070, ...
+  PortDescr    : M-GigabitEthernet1/0/0/0 Interface                          
+  Pvid         :                          
+ 
+  System Capabilities Supported  : bridge, router
+  System Capabilities Enabled    : bridge, router
+ 
+  Remote Management Address
+     Type    : all802
+     Address : 00 00 00 00 00 00
+ 
+  Poe Plus Information Detail 
+ 
+    Poe Device Type         : Type2 PSE
+    Power Source            : Unknown
+    Power Priority          : Unknown
+    Requested Power Value   : 0.0 Watts
+    Actual Power Value      : 0.0 Watts
+

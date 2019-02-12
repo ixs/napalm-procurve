@@ -1,0 +1,3 @@
+ifName.1 = 1
+ifName.47 = 47
+ifName.48 = 48
