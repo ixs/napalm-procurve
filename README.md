@@ -3,7 +3,16 @@
 [NAPALM](https://napalm-automation.net/) driver for HPE ProCurve networking
 gear.
 
-Development Status
+Supported devices
+=================
+
+All ProCurve OS devices should be supported. The code has been written and tested
+having access to ProCurve 2848 and to E2910al-48G-PoE devices.
+
+If a different device or a different firmware release should cause problems, please
+open a GitHub issue and paste the appropriate output from the switch.
+
+Development status
 ==================
 
 The driver is functional and can be used to poll status information:
