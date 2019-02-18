@@ -637,9 +637,12 @@ class ProcurveDriver(NetworkDriver):
 
         return ntp_servers
 
-    def get_arp_table(self):
+    def get_arp_table(self, vrf=""):
         """Get arp table information."""
         arp_table = []
+
+        if vrf:
+          raise NotImplementedError('No VRF support with this driver/platform.')
 
         command = 'show arp'
         output = self._send_command(command)
