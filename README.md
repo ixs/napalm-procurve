@@ -61,7 +61,7 @@ from napalm import get_network_driver
 driver = get_network_driver('procurve')
 
 switch = ('10.0.0.254', 22)
-device = driver('10.0.0.254', 'user', 'password', optional_args={'ssh_config_file': '~/.ssh/config', 'port': 22})
+device = driver('10.0.0.254', 'manager', 'secret', optional_args={'ssh_config_file': '~/.ssh/config', 'port': 22})
 device.open()
 
 vals = device.get_mac_address_table()
