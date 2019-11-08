@@ -20,13 +20,12 @@ Read https://napalm.readthedocs.io for more information.
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import difflib
 import re
 import sys
 import socket
 import telnetlib
 
-from netmiko import ConnectHandler, FileTransfer, InLineTransfer
+from netmiko import ConnectHandler
 from napalm.base.base import NetworkDriver
 from napalm.base.exceptions import (
     CommandErrorException,
@@ -218,7 +217,8 @@ class ProcurveDriver(NetworkDriver):
     def _get_interface_map(self):
         """Build an interface map that matches interface name to interface index id"""
         if len(self.interface_map) < 1 or "pytest" in sys.modules:
-            self.interface_map = {v: k for k, v in self._walkMIB_values('ifName').items()}
+            self.interface_map = {v: k for k,
+                                  v in self._walkMIB_values('ifName').items()}
         return self.interface_map
 
     def get_facts(self):
@@ -394,8 +394,6 @@ class ProcurveDriver(NetworkDriver):
                               6: 'agentCircuitId',
                               7: 'local'}
 
-
-
         # Check if router supports the command
         if 'Invalid input' in output:
             raise ValueError("Command not supported by network device")
@@ -499,7 +497,7 @@ class ProcurveDriver(NetworkDriver):
             environment[env_category][sname] = env_value
         return environment
 
-    def get_config(self, retrieve='all'):
+    def get_config(self, retrieve='all', full=False):
 
         config = {
             'startup': '',
@@ -519,6 +517,7 @@ class ProcurveDriver(NetworkDriver):
                 r'^; .* Configuration Editor;.*$', startup_config,
                 flags=re.M)[1].strip()
             config['startup'] = py23_compat.text_type(startup_config)
+            config['candidate'] = ''
         return config
 
     def _ping_caps(self):
@@ -672,7 +671,8 @@ class ProcurveDriver(NetworkDriver):
         arp_table = []
 
         if vrf:
-          raise NotImplementedError('No VRF support with this driver/platform.')
+            raise NotImplementedError(
+                'No VRF support with this driver/platform.')
 
         command = 'show arp'
         output = self._send_command(command)
@@ -739,7 +739,7 @@ class ProcurveDriver(NetworkDriver):
 
             for line in output.splitlines():
                 try:
-                  mac, port = line.split()
+                    mac, port = line.split()
                 except IndexError:
                     raise ValueError("Unexpected output from: {}".format(line))
 
