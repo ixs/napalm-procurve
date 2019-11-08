@@ -1,0 +1,9 @@
+ifMtu.1 = 1500
+ifMtu.2 = 1500
+ifMtu.3 = 1500
+ifMtu.4 = 1500
+ifMtu.5 = 1500
+ifMtu.6 = 1500
+ifMtu.7 = 1500
+ifMtu.8 = 1500
+ifMtu.9 = 1500

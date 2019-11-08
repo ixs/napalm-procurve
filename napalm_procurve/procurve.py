@@ -764,6 +764,7 @@ class ProcurveDriver(NetworkDriver):
         if_alias = self._walkMIB_values('ifAlias')
         if_speed = self._walkMIB_values('ifSpeed')
         if_macs = self._walkMIB_values('ifPhysAddress')
+        if_mtu = self._walkMIB_values('ifMtu')
         if_adm_state = self._walkMIB_values('ifAdminStatus')
         if_lnk_state = self._walkMIB_values('ifOperStatus')
         if_last_change = self._walkMIB_values('ifLastChange')
@@ -777,7 +778,8 @@ class ProcurveDriver(NetworkDriver):
                     'last_flapped':
                     -1.0,  # Data makes no sense... unsupported for now.
                     'speed': int(int(if_speed[idx].replace(',', '')) / 1000 / 1000),
-                    'mac_address': py23_compat.text_type(if_macs[idx])
+                    'mac_address': py23_compat.text_type(if_macs[idx]),
+                    'mtu': int(if_mtu[idx]),
                 }
         return interfaces
 
