@@ -379,7 +379,10 @@ class ProcurveDriver(NetworkDriver):
         lldp = {}
         ifs = self._get_interface_map()
 
-        command = "show lldp info remote-device ethernet {}".format(interface)
+        if interface == 'OOBM':
+            command = "show lldp info remote-device oobm"
+        else:
+            command = "show lldp info remote-device ethernet {}".format(interface)
         output = self._send_command(command)
 
         key_mib_table = {
