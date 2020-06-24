@@ -33,7 +33,16 @@ from napalm.base.exceptions import (
     ConnectionException,
 )
 
-from napalm.base.utils import py23_compat
+from napalm.base.helpers import textfsm_extractor
+
+try:
+    from napalm.base.utils import py23_compat
+except:
+    class py23_compat:
+        def text_type(self,thing):
+            return str(thing)
+    py23_compat = py23_compat()
+
 import napalm.base.constants as C
 import napalm.base.helpers
 
@@ -496,6 +505,36 @@ class ProcurveDriver(NetworkDriver):
                 continue
             environment[env_category][sname] = env_value
         return environment
+
+    def _expand_interface_list(self, interface_list):
+        # 1,2-4,14-59 etc
+        if_list = []
+        if interface_list == '':
+            # Breakout to return empty list
+            return if_list
+        for i in interface_list.split(','):
+            m = re.match('^(\d+)-(\d+)', i)
+            if m:
+                from_i = int(m.group(1))
+                to_i = int(m.group(2))
+                if_list += range(from_i, to_i+1)
+            else:
+                if_list.append(i)
+        return set([str(i) for i in if_list])
+
+
+    def get_vlans(self):
+        running_config = self.get_config(retrieve='running')['running']
+        vlan_list = textfsm_extractor(self, 'get_vlans', running_config)
+        vlans = {}
+        for v in vlan_list:
+            tagged = set(self._expand_interface_list(v['tagged_vlan_list']))
+            untagged = set(self._expand_interface_list(v['untagged_vlan_list']))
+            vlans[v['vlan_id']] = {
+                'name': v['vlan_name'],
+                'interfaces': list(tagged.union(untagged))
+            }
+        return vlans
 
     def get_config(self, retrieve='all', full=False):
 
