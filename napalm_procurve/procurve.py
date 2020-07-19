@@ -1,4 +1,4 @@
-# Copyright 2017-2019 Andreas Thienemann. All rights reserved.
+# Copyright 2017-2020 Andreas Thienemann. All rights reserved.
 #
 # The contents of this file are licensed under the Apache License, Version 2.0
 # (the "License"); you may not use this file except in compliance with the
@@ -79,7 +79,12 @@ class ProcurveDriver(NetworkDriver):
             except KeyError:
                 pass
         self.global_delay_factor = optional_args.get("global_delay_factor", 1)
-        self.port = optional_args.get("port", 22)
+
+        # Set the default port if not set
+        default_port = {"ssh": 22, "telnet": 23}
+        self.netmiko_optional_args.setdefault("port", default_port[self.transport])
+
+        self.force_no_enable = optional_args.get("force_no_enable", False)
 
         self.device = None
         self.config_replace = False
@@ -92,15 +97,9 @@ class ProcurveDriver(NetworkDriver):
         device_type = "hp_procurve_ssh"
         if self.transport == "telnet":
             device_type = "hp_procurve_telnet"
-        self.device = ConnectHandler(
-            device_type=device_type,
-            host=self.hostname,
-            username=self.username,
-            password=self.password,
-            **self.netmiko_optional_args
+        self.device = self._netmiko_open(
+            device_type, netmiko_optional_args=self.netmiko_optional_args
         )
-        # ensure in enable mode
-        self.device.enable()
 
     def close(self):
         """Close the connection to the device."""
