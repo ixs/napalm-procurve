@@ -1,10 +1,13 @@
 black
-future
 coveralls
+flake8-import-order
+future
 pytest
 pytest-cov
 pytest-json
 pytest-pythonpath
 pylama
-flake8-import-order
+twine
+setuptools
+wheel
 -r requirements.txt
