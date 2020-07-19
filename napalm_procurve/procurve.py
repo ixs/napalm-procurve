@@ -28,7 +28,6 @@ import telnetlib
 from netmiko import ConnectHandler
 from napalm.base.base import NetworkDriver
 from napalm.base.exceptions import (
-    CommandErrorException,
     ConnectionClosedException,
     ConnectionException,
 )

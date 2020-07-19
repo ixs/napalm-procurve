@@ -10,7 +10,7 @@ except ImportError:
 __author__ = 'Andreas Thienemann <andreas@bawue.net>'
 
 install_reqs = parse_requirements('requirements.txt', session=uuid.uuid1())
-reqs = [str(ir.req) for ir in install_reqs]
+reqs = [str(ir.requirement) for ir in install_reqs]
 
 setup(
     name="napalm-procurve",
