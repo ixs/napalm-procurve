@@ -1,0 +1,44 @@
+{
+  "1": [
+    {
+      "port": "48 7b 6b 39 88 8b",
+      "hostname": "a1001.atlas.local"
+    }
+  ],
+  "30": [
+    {
+      "port": "d8 50 e6 c3 a4 2f",
+      "hostname": "a1030.atlas.local"
+    }
+  ],
+  "A1": [
+    {
+      "port": "Ten-GigabitEthernet0/0/10",
+      "hostname": "Coredata"
+    }
+  ],
+  "A2": [
+    {
+      "port": "Ten-GigabitEthernet1/0/10",
+      "hostname": "Coredata"
+    }
+  ],
+  "B1": [
+    {
+      "port": "Ten-GigabitEthernet2/0/10",
+      "hostname": "Coredata"
+    }
+  ],
+  "B2": [
+    {
+      "port": "Ten-GigabitEthernet3/0/10",
+      "hostname": "Coredata"
+    }
+  ],
+  "OOBM": [
+    {
+      "port": "Ethernet1/0/30",
+      "hostname": "mgs010b"
+    }
+  ]
+}

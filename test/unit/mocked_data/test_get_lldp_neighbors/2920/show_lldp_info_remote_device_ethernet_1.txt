@@ -1,0 +1,20 @@
+
+ LLDP Remote Device Information Detail
+
+  Local Port   : 1
+  ChassisType  : mac-address         
+  ChassisId    : 48 7b 6b 39 88 8b        
+  PortType     : mac-address                                               
+  PortId       : 48 7b 6b 39 88 8b                                         
+  SysName      : a1001.atlas.local               
+  System Descr : Debian GNU/Linux 8 (jessie) Linux 4.9.0-0.bpo.6-amd64 #1 ...
+  PortDescr    : eth0                                                        
+  Pvid         :                          
+
+  System Capabilities Supported  : bridge, wlan-access-point, router
+  System Capabilities Enabled    : station-only
+
+  Remote Management Address
+     Type    : ipv4
+     Address : 10.10.10.1
+

@@ -1,0 +1,22 @@
+
+ LLDP Remote Device Information Detail
+
+  Local Port   : 30
+  ChassisType  : mac-address         
+  ChassisId    : d8 50 e6 c3 a4 2e        
+  PortType     : mac-address                                               
+  PortId       : d8 50 e6 c3 a4 2f                                         
+  SysName      : a1030.atlas.local               
+  System Descr : Debian GNU/Linux 10 (buster) Linux 4.19.0-10-amd64 #1 SMP...
+  PortDescr    : enp3s0                                                      
+  Pvid         :                          
+
+  System Capabilities Supported  : bridge, wlan-access-point, router
+  System Capabilities Enabled    : station-only
+
+  Remote Management Address
+     Type    : ipv4
+     Address : 172.23.10.30
+     Type    : ipv6
+     Address : fe80::da50:e6ff:fec3:a42e
+

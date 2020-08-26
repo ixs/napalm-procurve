@@ -1,0 +1,1 @@
+lldpRemSysDesc.0.30.1 = Debian GNU/Linux 10 (buster) Linux 4.19.0-10-amd64 #1 SMP Debian 4.19.132-1 (2020-07-24) x86_64

@@ -1,0 +1,1 @@
+lldpRemSysDesc.0.49.1 = HPE Comware Platform Software, Software Version 7.1.045, Release 1152

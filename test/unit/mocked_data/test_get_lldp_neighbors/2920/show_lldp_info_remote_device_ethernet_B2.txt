@@ -1,0 +1,26 @@
+
+  Local Port   : B2
+  ChassisType  : mac-address         
+  ChassisId    : cc 3e 5f 2f c4 90        
+  PortType     : interface-name                                            
+  PortId       : Ten-GigabitEthernet3/0/10                                 
+  SysName      : Coredata                        
+  System Descr : HPE Comware Platform Software, Software Version 7.1.045, ...
+  PortDescr    : Ten-GigabitEthernet3/0/10 Interface                         
+  Pvid         : 1                        
+
+  System Capabilities Supported  : bridge, router
+  System Capabilities Enabled    : bridge, router
+
+  Remote Management Address
+     Type    : all802
+     Address : 00 0f e2 07 f2 e0
+
+  Poe Plus Information Detail 
+
+    Poe Device Type         : Type2 PSE
+    Power Source            : Unknown
+    Power Priority          : Unknown
+    Requested Power Value   : 0.0 Watts
+    Actual Power Value      : 0.0 Watts
+

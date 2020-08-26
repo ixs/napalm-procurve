@@ -1,0 +1,1 @@
+lldpRemSysDesc.0.1.1 = Debian GNU/Linux 8 (jessie) Linux 4.9.0-0.bpo.6-amd64 #1 SMP Debian 4.9.88-1+deb9u1~bpo8+1 (2018-05-13) x86_64

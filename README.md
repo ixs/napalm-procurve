@@ -60,6 +60,14 @@ from napalm import get_network_driver
 
 driver = get_network_driver("procurve")
 
+# Uncomment if you need debug logging of the raw commands sent to the
+# device and any data received
+#import logging
+#logging.basicConfig(filename="procurve.debug.log", level=logging.DEBUG)
+#logger = logging.getLogger("netmiko")
+
+driver = get_network_driver("procurve")
+
 device = driver(
     "10.0.0.254",
     "manager",

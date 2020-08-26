@@ -1,0 +1,12 @@
+
+ LLDP Remote Devices Information
+
+  LocalPort | ChassisId          PortId             PortDescr SysName           
+  --------- + ------------------ ------------------ --------- ------------------
+  1         | 48 7b 6b 39 88 8b  48 7b 6b 39 88 8b  eth0      a1001.atlas.local 
+  30        | d8 50 e6 c3 a4 2e  d8 50 e6 c3 a4 2f  enp3s0    a1030.atlas.local 
+  A1        | cc 3e 5f 2f c4 90  Ten-GigabitEthe... Ten-Gi... Coredata          
+  A2        | cc 3e 5f 2f c4 90  Ten-GigabitEthe... Ten-Gi... Coredata          
+  B1        | cc 3e 5f 2f c4 90  Ten-GigabitEthe... Ten-Gi... Coredata          
+  B2        | cc 3e 5f 2f c4 90  Ten-GigabitEthe... Ten-Gi... Coredata          
+  OOBM      | cc 3e 5f cf 12 48  Ethernet1/0/30     Ethern... mgs010b 

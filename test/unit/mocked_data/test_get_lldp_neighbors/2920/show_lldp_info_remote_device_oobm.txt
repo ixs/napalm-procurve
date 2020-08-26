@@ -1,0 +1,19 @@
+
+ LLDP Remote Device Information Detail
+
+  Local Port   : OOBM
+  ChassisType  : mac-address         
+  ChassisId    : cc 3e 5f cf 12 48        
+  PortType     : interface-name                                            
+  PortId       : Ethernet1/0/30                                            
+  SysName      : mgs010b                         
+  System Descr : 1910-48 Switch Software Version 5.20.99, Release 1116       
+  PortDescr    : Ethernet1/0/30 Interface                                    
+  Pvid         :                          
+
+  System Capabilities Supported  : bridge, router
+  System Capabilities Enabled    : bridge, router
+
+  Remote Management Address
+     Type    : ipv4
+     Address : 172.25.13.10
