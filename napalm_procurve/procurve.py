@@ -296,6 +296,10 @@ class ProcurveDriver(NetworkDriver):
         split_output = split_output.strip()
 
         for lldp_entry in split_output.splitlines():
+            # Exclude any lines that are a continuation of an entry
+            if '|' not in lldp_entry:
+                continue
+
             # Example, 1         | 00 25 90 3d c3 1f         eth0   eth0      (none).(none)
             local_port = lldp_entry.strip().split(" ", 1)[0].strip()
 
