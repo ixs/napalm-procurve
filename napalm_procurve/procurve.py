@@ -231,13 +231,23 @@ class ProcurveDriver(NetworkDriver):
         show_model = self._getMIB_value("sysDescr.0")
         show_int_br = self._send_command("show interfaces brief")
 
-        uptime = dict(zip(("d", "h", "m", "s"), show_uptime.split(":")))
-        uptime_seconds = (
-            int(float(uptime["s"]))
-            + int(uptime["m"]) * 60
-            + int(uptime["h"]) * 60 * 60
-            + int(uptime["d"]) * 60 * 60 * 24
-        )
+        stacking = False
+        if show_uptime.startswith("Stack"):
+            stacking = True
+            uptime_split = show_uptime.splitlines()[1].split()
+            uptime_seconds = (
+                int(uptime_split[2][:-1]) * 60
+                + int(uptime_split[1][:-1]) * 60 * 60
+                + int(uptime_split[0][:-1]) * 60 * 60 * 24
+            )
+        else:
+            uptime = dict(zip(("d", "h", "m", "s"), show_uptime.split(":")))
+            uptime_seconds = (
+                int(float(uptime["s"]))
+                + int(uptime["m"]) * 60
+                + int(uptime["h"]) * 60 * 60
+                + int(uptime["d"]) * 60 * 60 * 24
+            )
 
         for line in show_system.splitlines():
             if " System Name " in line:
@@ -248,7 +258,14 @@ class ProcurveDriver(NetworkDriver):
             if " Software revision " in line:
                 os_version = line.split(" : ")[1].split()[0].strip()
             if " Serial Number " in line:
-                serial_number = line.split(" : ")[2].strip()
+                if stacking:
+                    if serial_number == "Unknown":
+                        serial_number = ""
+                    serial_number += line.split(" : ")[1].strip()+" "
+                else:
+                    serial_number = line.split(" : ")[2].strip()
+
+        serial_number = serial_number.strip()
 
         model = show_model.split(", ")[0].strip()
 
