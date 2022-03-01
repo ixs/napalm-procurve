@@ -362,6 +362,7 @@ class ProcurveDriver(NetworkDriver):
                     "remote_system_name": lldp_fields["SysName"],
                     "remote_system_description": lldp_fields["SystemDescr"],
                     "remote_system_capab": lldp_fields["SystemCapabilitiesSupported"],
+                    "remote_system_mgmt_ip": lldp_fields["AdmMgmtAddress"],
                     "remote_system_enable_capab": lldp_fields[
                         "SystemCapabilitiesEnabled"
                     ],
