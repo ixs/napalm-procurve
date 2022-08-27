@@ -777,7 +777,7 @@ class ProcurveDriver(NetworkDriver):
                     "is_enabled": True if if_adm_state[idx] == "1" else False,
                     "description": str(if_alias[idx]),
                     "last_flapped": -1.0,  # Data makes no sense... unsupported for now.
-                    "speed": int(int(if_speed[idx].replace(",", "")) / 1000 / 1000),
+                    "speed": float(int(if_speed[idx].replace(",", "")) / 1000 / 1000),
                     "mac_address": str(if_macs[idx]),
                     "mtu": int(if_mtu[idx]),
                 }
