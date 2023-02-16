@@ -69,6 +69,7 @@ class ProcurveDriver(NetworkDriver):
             "alt_host_keys": False,
             "alt_key_file": "",
             "ssh_config_file": None,
+            "session_log": None
         }
 
         # Build dict of any optional Netmiko args
